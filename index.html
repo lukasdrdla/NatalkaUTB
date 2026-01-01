@@ -372,6 +372,7 @@
             <button class="category-tab" onclick="setCategory('rozdily')">FÚ vs MÚ</button>
             <button class="category-tab" onclick="setCategory('etapy')">Vývojové etapy</button>
             <button class="category-tab" onclick="setCategory('trendy')">Trendy</button>
+            <button class="category-tab" onclick="setCategory('naklady')">💰 Náklady</button>
         </div>
 
         <!-- Flashcard Mode -->
@@ -459,6 +460,34 @@
             { category: 'trendy', q: 'Co znamená TQM v kontextu kvality?', a: 'Total Quality Management - systémy zajišťující 100% kvalitu' },
             { category: 'trendy', q: 'Proč je důležitý čas v manažerském účetnictví?', a: 'Zkracování dodacích časů, eliminace aktivit nepřidávajících hodnotu' },
             { category: 'trendy', q: 'Co zahrnuje etické chování v účetnictví?', a: 'Bezúhonnost (nulová tolerance k falzifikacím), objektivita (nezaujatost), důvěrnost, kompetentnost, dodržování zákonů' },
+
+            // MAUC 2 - Význam nákladů v podnikovém řízení
+            { category: 'naklady', q: 'K čemu se využívají informace o nákladech?', a: 'Cenová rozhodování, plánování výroby (Target Costing), rozpočetnictví, měření výkonnosti, vykazování externím subjektům' },
+            { category: 'naklady', q: '⚠️ TEST: Jak se změnila struktura nákladů od 1. pol. 20. stol.?', a: 'Dříve režijní N cca 10%, dnes cca 50% (služby až 80%) - dramatický nárůst režie na úkor přímých N' },
+            { category: 'naklady', q: 'Jaké jsou příčiny změn struktury nákladů (1950-2015)?', a: 'Levnější materiály, růst automatizace, customizace, nárůst režijních činností, komplexní produkty, zkracování životního cyklu' },
+            { category: 'naklady', q: 'Jaké je finanční pojetí nákladů?', a: 'Úbytek ekonomického prospěchu = úbytek aktiv nebo přírůstek dluhů' },
+            { category: 'naklady', q: 'Jaké je hodnotové (manažerské) pojetí nákladů?', a: 'Účelné vynaložení ekonomických zdrojů' },
+            { category: 'naklady', q: 'Co je druhové členění nákladů?', a: 'Dle spotřebovaného externího vstupu: materiál, osobní N, odpisy, externí služby, finanční N' },
+            { category: 'naklady', q: 'Co jsou technologické náklady?', a: 'Náklady vyvolané technologií výroby' },
+            { category: 'naklady', q: 'Co jsou jednicové náklady?', a: 'Náklady přímo přiřaditelné jednotce výkonu' },
+            { category: 'naklady', q: 'Co jsou režijní náklady?', a: 'Náklady na technologický proces jako celek + obsluha a řízení' },
+            { category: 'naklady', q: 'Co jsou přímé vs nepřímé náklady?', a: 'Přímé: přímo souvisí s konkrétním výkonem | Nepřímé: nevážou se k jednomu druhu výkonu' },
+            { category: 'naklady', q: 'Co jsou variabilní náklady?', a: 'Náklady, které se mění s objemem výroby' },
+            { category: 'naklady', q: 'Co jsou fixní náklady?', a: 'Náklady neměnné v určitém rozpětí = kapacitní náklady' },
+            { category: 'naklady', q: 'Co jsou smíšené (semivariabilní) náklady?', a: 'Obsahují fixní + variabilní složku (např. energie)' },
+            { category: 'naklady', q: '⚠️ TEST: Co jsou Sticky costs (strnulé náklady)?', a: 'Náklady reagují asymetricky: při růstu aktivity rostou více, při poklesu neklesají proporcionálně (pomalá manažerská reakce)' },
+            { category: 'naklady', q: '⚠️ TEST: Co je variabilizace nákladů?', a: 'Snaha zvýšit podíl variabilních N na úkor fixních - agenturní pracovníci, outsourcing, servisní smlouvy' },
+            { category: 'naklady', q: 'Co je marže (krycí příspěvek)?', a: 'Cena − variabilní náklady = příspěvek na úhradu fixních N a tvorbu zisku' },
+            { category: 'naklady', q: 'Co je analýza bodu zvratu?', a: 'Zjišťuje, od kdy je podnik ziskový (kdy tržby pokryjí všechny náklady)' },
+            { category: 'naklady', q: 'Co je provozní páka?', a: 'Nízká páka = více variabilních N, menší riziko | Vysoká páka = více fixních N, větší riziko i potenciál zisku' },
+            { category: 'naklady', q: 'Co jsou utopené náklady (sunk costs)?', a: 'Vynaloženy v minulosti, nelze je změnit - pro rozhodování je vyloučit!' },
+            { category: 'naklady', q: 'Co jsou oportunitní náklady?', a: 'Náklady obětované příležitosti = ušlý zisk z nepřijaté alternativy' },
+            { category: 'naklady', q: '⚠️ TEST: Jaké jsou kalkulační druhy nákladů (5)?', a: '1. Kalkulační odpisy, 2. Kalkulační úroky, 3. Kalkulační rizikové přirážky, 4. Kalkulační podnikatelská mzda, 5. Kalkulační nájemné' },
+            { category: 'naklady', q: 'Co jsou kalkulační odpisy?', a: 'Skutečné opotřebení, reprodukční cena, i po odepsání ve FÚ' },
+            { category: 'naklady', q: 'Co jsou kalkulační úroky?', a: 'Ušlý výnos z vázaného kapitálu (oportunitní náklad)' },
+            { category: 'naklady', q: 'Co jsou kalkulační rizikové přirážky?', a: 'Vnitřní ocenění rizika spojené s aktivitou' },
+            { category: 'naklady', q: 'Co je kalkulační podnikatelská mzda?', a: 'Pro živnostníky, kteří nemají standardní mzdu' },
+            { category: 'naklady', q: 'Co je kalkulační nájemné?', a: 'Ušlý výnos z vlastních prostor (kdyby byly pronajaty)' },
         ];
 
         let cards = [...allCards];
