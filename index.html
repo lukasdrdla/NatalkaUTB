@@ -292,34 +292,120 @@
             font-size: 1.2rem;
         }
 
-        /* Category tabs */
-        .category-tabs {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
+        /* Okruhy navigace */
+        .okruhy-section {
             margin-bottom: 25px;
         }
 
-        .category-tab {
-            padding: 10px 20px;
-            border: 2px solid #ffb6c1;
+        .okruhy-nav {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .okruh-btn {
+            padding: 12px 22px;
+            border: none;
             border-radius: 20px;
-            background: white;
-            color: #d63384;
-            font-size: 0.9rem;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(214, 51, 132, 0.2);
+        }
+
+        .okruh-btn.active {
+            background: linear-gradient(135deg, #ff6b9d 0%, #d63384 100%);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .okruh-btn:not(.active) {
+            background: white;
+            color: #d63384;
+            border: 2px solid #ffb6c1;
+        }
+
+        .okruh-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(214, 51, 132, 0.4);
+        }
+
+        .okruh-info {
+            text-align: center;
+            background: white;
+            padding: 12px 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(214, 51, 132, 0.1);
+        }
+
+        .okruh-info h3 {
+            color: #d63384;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .okruh-info span {
+            color: #e785a8;
+            font-size: 0.9rem;
+        }
+
+        /* Kategorie tabs */
+        .category-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .category-tab {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 15px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(214, 51, 132, 0.15);
         }
 
         .category-tab.active {
-            background: linear-gradient(135deg, #ff6b9d 0%, #d63384 100%);
+            background: linear-gradient(135deg, #ffb6c1 0%, #e785a8 100%);
             color: white;
-            border-color: transparent;
+        }
+
+        .category-tab:not(.active) {
+            background: #fff5f8;
+            color: #d63384;
+            border: 1px solid #ffb6c1;
         }
 
         .category-tab:hover {
             transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(214, 51, 132, 0.3);
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #ffe4ec;
+            color: #d63384;
+            padding: 5px 12px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .flashcard-back .card-badge {
+            background: rgba(255,255,255,0.2);
+            color: white;
         }
 
         .hidden {
@@ -366,13 +452,24 @@
             <button class="mode-btn" onclick="setMode('quiz')">💯 Quiz</button>
         </div>
 
-        <div class="category-tabs">
+        <!-- Okruhy navigace -->
+        <div class="okruhy-section">
+            <div class="okruhy-nav">
+                <button class="okruh-btn active" onclick="setOkruh('all')">📚 Vše</button>
+                <button class="okruh-btn" onclick="setOkruh(1)">1️⃣ Okruh 1</button>
+                <button class="okruh-btn" onclick="setOkruh(2)">2️⃣ Okruh 2</button>
+                <button class="okruh-btn" onclick="setOkruh(3)">3️⃣ Okruh 3</button>
+                <button class="okruh-btn" onclick="setOkruh(4)">4️⃣ Okruh 4</button>
+            </div>
+            <div class="okruh-info" id="okruh-info">
+                <h3>Všechny okruhy</h3>
+                <span id="okruh-count">60 kartiček</span>
+            </div>
+        </div>
+
+        <!-- Kategorie v rámci okruhu -->
+        <div class="category-tabs" id="category-tabs">
             <button class="category-tab active" onclick="setCategory('all')">Vše</button>
-            <button class="category-tab" onclick="setCategory('klasifikace')">Klasifikace</button>
-            <button class="category-tab" onclick="setCategory('rozdily')">FÚ vs MÚ</button>
-            <button class="category-tab" onclick="setCategory('etapy')">Vývojové etapy</button>
-            <button class="category-tab" onclick="setCategory('trendy')">Trendy</button>
-            <button class="category-tab" onclick="setCategory('naklady')">💰 Náklady</button>
         </div>
 
         <!-- Flashcard Mode -->
@@ -427,72 +524,153 @@
     </div>
 
     <script>
+        // Informace o okruzích
+        const okruhyInfo = {
+            1: { name: 'Úvod do manažerského účetnictví', emoji: '1️⃣' },
+            2: { name: 'Význam nákladů v podnikovém řízení', emoji: '2️⃣' },
+            3: { name: 'Nákladové kalkulace', emoji: '3️⃣' },
+            4: { name: 'Procesní kalkulace ABC', emoji: '4️⃣' }
+        };
+
+        const categoryNames = {
+            'klasifikace': 'Klasifikace',
+            'rozdily': 'FÚ vs MÚ',
+            'etapy': 'Vývojové etapy',
+            'trendy': 'Trendy',
+            'naklady': 'Náklady',
+            'kalkulace': 'Kalkulace',
+            'prirazky': 'Přirážková kalkulace',
+            'kvn': 'Kalkulace var. N',
+            'abc': 'ABC základy',
+            'aktivity': 'Aktivity',
+            'abm': 'ABM řízení'
+        };
+
         // Data - kartičky s otázkami a odpověďmi
         const allCards = [
+            // OKRUH 1 - Úvod do manažerského účetnictví
             // Klasifikace účetních systémů
-            { category: 'klasifikace', q: 'Jaké jsou hlavní typy účetních systémů?', a: 'Finanční účetnictví (MD, D), Daňové účetnictví, Nákladové účetnictví, Manažerské účetnictví (odhady, predikce), Odpovědnostní účetnictví' },
-            { category: 'klasifikace', q: 'Jaký je cíl všech účetních systémů?', a: 'Poskytovat informace uživatelům' },
-            { category: 'klasifikace', q: 'Co je typické pro Anglosaský systém účetnictví?', a: 'US GAAP, IFRS | Uživatelé: investoři, akcionáři, držitelé dluhopisů | Země: USA, UK' },
-            { category: 'klasifikace', q: 'Co je typické pro Kontinentální systém účetnictví?', a: 'Uživatelé: stát, banky, vedení | Země: Francie, Německo, ČR' },
-            { category: 'klasifikace', q: 'Proč nejsou účetní systémy snadno slučitelné?', a: 'Kvůli rozdílům v oceňování majetku mezi systémy' },
-            { category: 'klasifikace', q: 'Jaké jsou dva hlavní mezinárodní účetní standardy?', a: 'US GAAP (USA) a IAS/IFRS (Evropa) - oba založeny na podobných principech' },
+            { okruh: 1, category: 'klasifikace', q: 'Jaké jsou hlavní typy účetních systémů?', a: 'Finanční účetnictví (MD, D), Daňové účetnictví, Nákladové účetnictví, Manažerské účetnictví (odhady, predikce), Odpovědnostní účetnictví' },
+            { okruh: 1, category: 'klasifikace', q: 'Jaký je cíl všech účetních systémů?', a: 'Poskytovat informace uživatelům' },
+            { okruh: 1, category: 'klasifikace', q: 'Co je typické pro Anglosaský systém účetnictví?', a: 'US GAAP, IFRS | Uživatelé: investoři, akcionáři, držitelé dluhopisů | Země: USA, UK' },
+            { okruh: 1, category: 'klasifikace', q: 'Co je typické pro Kontinentální systém účetnictví?', a: 'Uživatelé: stát, banky, vedení | Země: Francie, Německo, ČR' },
+            { okruh: 1, category: 'klasifikace', q: 'Proč nejsou účetní systémy snadno slučitelné?', a: 'Kvůli rozdílům v oceňování majetku mezi systémy' },
+            { okruh: 1, category: 'klasifikace', q: 'Jaké jsou dva hlavní mezinárodní účetní standardy?', a: 'US GAAP (USA) a IAS/IFRS (Evropa) - oba založeny na podobných principech' },
 
             // Rozdíly FÚ vs MÚ
-            { category: 'rozdily', q: 'Kdo jsou uživatelé Finančního účetnictví vs Manažerského účetnictví?', a: 'FÚ = externí (investoři, banky) | MÚ = vedení, manažeři' },
-            { category: 'rozdily', q: 'Jaký je obsah FÚ vs MÚ?', a: 'FÚ = aktiva, pasiva, HV | MÚ = kalkulace, rozpočty' },
-            { category: 'rozdily', q: 'Na co se zaměřuje FÚ vs MÚ?', a: 'FÚ = podnik jako celek | MÚ = i vnitropodnikové jednotky' },
-            { category: 'rozdily', q: 'Jak je regulováno FÚ vs MÚ?', a: 'FÚ = zákonem regulováno | MÚ = neregulováno' },
-            { category: 'rozdily', q: 'Jaké jednotky používá FÚ vs MÚ?', a: 'FÚ = pouze peněžní | MÚ = peněžní + naturální' },
-            { category: 'rozdily', q: 'Jaká je periodicita FÚ vs MÚ?', a: 'FÚ = ročně | MÚ = dle potřeby' },
-            { category: 'rozdily', q: 'Na jaký čas se zaměřuje FÚ vs MÚ?', a: 'FÚ = MINULOST | MÚ = BUDOUCNOST' },
-            { category: 'rozdily', q: 'Jaká je spolehlivost FÚ vs MÚ?', a: 'FÚ = spolehlivé, veřejné | MÚ = odhady, důvěrné' },
+            { okruh: 1, category: 'rozdily', q: 'Kdo jsou uživatelé Finančního účetnictví vs Manažerského účetnictví?', a: 'FÚ = externí (investoři, banky) | MÚ = vedení, manažeři' },
+            { okruh: 1, category: 'rozdily', q: 'Jaký je obsah FÚ vs MÚ?', a: 'FÚ = aktiva, pasiva, HV | MÚ = kalkulace, rozpočty' },
+            { okruh: 1, category: 'rozdily', q: 'Na co se zaměřuje FÚ vs MÚ?', a: 'FÚ = podnik jako celek | MÚ = i vnitropodnikové jednotky' },
+            { okruh: 1, category: 'rozdily', q: 'Jak je regulováno FÚ vs MÚ?', a: 'FÚ = zákonem regulováno | MÚ = neregulováno' },
+            { okruh: 1, category: 'rozdily', q: 'Jaké jednotky používá FÚ vs MÚ?', a: 'FÚ = pouze peněžní | MÚ = peněžní + naturální' },
+            { okruh: 1, category: 'rozdily', q: 'Jaká je periodicita FÚ vs MÚ?', a: 'FÚ = ročně | MÚ = dle potřeby' },
+            { okruh: 1, category: 'rozdily', q: 'Na jaký čas se zaměřuje FÚ vs MÚ?', a: 'FÚ = MINULOST | MÚ = BUDOUCNOST' },
+            { okruh: 1, category: 'rozdily', q: 'Jaká je spolehlivost FÚ vs MÚ?', a: 'FÚ = spolehlivé, veřejné | MÚ = odhady, důvěrné' },
 
             // Vývojové etapy
-            { category: 'etapy', q: 'Jaká je I. vývojová etapa účetnictví?', a: 'Nákladové účetnictví - zaměření na minulost, evidence nákladů' },
-            { category: 'etapy', q: 'Jaká je II. vývojová etapa účetnictví?', a: 'Manažerské účetnictví - budoucnost, podpora rozhodnutí, modelování' },
-            { category: 'etapy', q: 'Jaká je III. vývojová etapa účetnictví?', a: 'Management nákladů - budoucnost, aktivní ovlivňování, strategie' },
+            { okruh: 1, category: 'etapy', q: 'Jaká je I. vývojová etapa účetnictví?', a: 'Nákladové účetnictví - zaměření na minulost, evidence nákladů' },
+            { okruh: 1, category: 'etapy', q: 'Jaká je II. vývojová etapa účetnictví?', a: 'Manažerské účetnictví - budoucnost, podpora rozhodnutí, modelování' },
+            { okruh: 1, category: 'etapy', q: 'Jaká je III. vývojová etapa účetnictví?', a: 'Management nákladů - budoucnost, aktivní ovlivňování, strategie' },
 
             // Vývojové trendy
-            { category: 'trendy', q: 'Jaké jsou hlavní vývojové trendy v manažerském účetnictví?', a: 'Analýza celého hodnotového řetězce, náklady od nápadu až po zrušení produktu, aktivní ovlivňování nákladů, procesní přístup, budoucí vývoj' },
-            { category: 'trendy', q: 'Jaké změny ovlivňují ekonomické prostředí od 80. let?', a: 'Globální konkurence, růst služeb (UK 75% HDP), zkracování životního cyklu výrobků, rozvoj technologií (lean systémy), IT (e-business, ERP)' },
-            { category: 'trendy', q: 'Co znamená zákaznická orientace v manažerském účetnictví?', a: 'Spokojenost zákazníků jako priorita' },
-            { category: 'trendy', q: 'Co je nákladová efektivnost?', a: 'Nízké náklady = konkurenční výhoda' },
-            { category: 'trendy', q: 'Co znamená TQM v kontextu kvality?', a: 'Total Quality Management - systémy zajišťující 100% kvalitu' },
-            { category: 'trendy', q: 'Proč je důležitý čas v manažerském účetnictví?', a: 'Zkracování dodacích časů, eliminace aktivit nepřidávajících hodnotu' },
-            { category: 'trendy', q: 'Co zahrnuje etické chování v účetnictví?', a: 'Bezúhonnost (nulová tolerance k falzifikacím), objektivita (nezaujatost), důvěrnost, kompetentnost, dodržování zákonů' },
+            { okruh: 1, category: 'trendy', q: 'Jaké jsou hlavní vývojové trendy v manažerském účetnictví?', a: 'Analýza celého hodnotového řetězce, náklady od nápadu až po zrušení produktu, aktivní ovlivňování nákladů, procesní přístup, budoucí vývoj' },
+            { okruh: 1, category: 'trendy', q: 'Jaké změny ovlivňují ekonomické prostředí od 80. let?', a: 'Globální konkurence, růst služeb (UK 75% HDP), zkracování životního cyklu výrobků, rozvoj technologií (lean systémy), IT (e-business, ERP)' },
+            { okruh: 1, category: 'trendy', q: 'Co znamená zákaznická orientace v manažerském účetnictví?', a: 'Spokojenost zákazníků jako priorita' },
+            { okruh: 1, category: 'trendy', q: 'Co je nákladová efektivnost?', a: 'Nízké náklady = konkurenční výhoda' },
+            { okruh: 1, category: 'trendy', q: 'Co znamená TQM v kontextu kvality?', a: 'Total Quality Management - systémy zajišťující 100% kvalitu' },
+            { okruh: 1, category: 'trendy', q: 'Proč je důležitý čas v manažerském účetnictví?', a: 'Zkracování dodacích časů, eliminace aktivit nepřidávajících hodnotu' },
+            { okruh: 1, category: 'trendy', q: 'Co zahrnuje etické chování v účetnictví?', a: 'Bezúhonnost (nulová tolerance k falzifikacím), objektivita (nezaujatost), důvěrnost, kompetentnost, dodržování zákonů' },
 
-            // MAUC 2 - Význam nákladů v podnikovém řízení
-            { category: 'naklady', q: 'K čemu se využívají informace o nákladech?', a: 'Cenová rozhodování, plánování výroby (Target Costing), rozpočetnictví, měření výkonnosti, vykazování externím subjektům' },
-            { category: 'naklady', q: '⚠️ TEST: Jak se změnila struktura nákladů od 1. pol. 20. stol.?', a: 'Dříve režijní N cca 10%, dnes cca 50% (služby až 80%) - dramatický nárůst režie na úkor přímých N' },
-            { category: 'naklady', q: 'Jaké jsou příčiny změn struktury nákladů (1950-2015)?', a: 'Levnější materiály, růst automatizace, customizace, nárůst režijních činností, komplexní produkty, zkracování životního cyklu' },
-            { category: 'naklady', q: 'Jaké je finanční pojetí nákladů?', a: 'Úbytek ekonomického prospěchu = úbytek aktiv nebo přírůstek dluhů' },
-            { category: 'naklady', q: 'Jaké je hodnotové (manažerské) pojetí nákladů?', a: 'Účelné vynaložení ekonomických zdrojů' },
-            { category: 'naklady', q: 'Co je druhové členění nákladů?', a: 'Dle spotřebovaného externího vstupu: materiál, osobní N, odpisy, externí služby, finanční N' },
-            { category: 'naklady', q: 'Co jsou technologické náklady?', a: 'Náklady vyvolané technologií výroby' },
-            { category: 'naklady', q: 'Co jsou jednicové náklady?', a: 'Náklady přímo přiřaditelné jednotce výkonu' },
-            { category: 'naklady', q: 'Co jsou režijní náklady?', a: 'Náklady na technologický proces jako celek + obsluha a řízení' },
-            { category: 'naklady', q: 'Co jsou přímé vs nepřímé náklady?', a: 'Přímé: přímo souvisí s konkrétním výkonem | Nepřímé: nevážou se k jednomu druhu výkonu' },
-            { category: 'naklady', q: 'Co jsou variabilní náklady?', a: 'Náklady, které se mění s objemem výroby' },
-            { category: 'naklady', q: 'Co jsou fixní náklady?', a: 'Náklady neměnné v určitém rozpětí = kapacitní náklady' },
-            { category: 'naklady', q: 'Co jsou smíšené (semivariabilní) náklady?', a: 'Obsahují fixní + variabilní složku (např. energie)' },
-            { category: 'naklady', q: '⚠️ TEST: Co jsou Sticky costs (strnulé náklady)?', a: 'Náklady reagují asymetricky: při růstu aktivity rostou více, při poklesu neklesají proporcionálně (pomalá manažerská reakce)' },
-            { category: 'naklady', q: '⚠️ TEST: Co je variabilizace nákladů?', a: 'Snaha zvýšit podíl variabilních N na úkor fixních - agenturní pracovníci, outsourcing, servisní smlouvy' },
-            { category: 'naklady', q: 'Co je marže (krycí příspěvek)?', a: 'Cena − variabilní náklady = příspěvek na úhradu fixních N a tvorbu zisku' },
-            { category: 'naklady', q: 'Co je analýza bodu zvratu?', a: 'Zjišťuje, od kdy je podnik ziskový (kdy tržby pokryjí všechny náklady)' },
-            { category: 'naklady', q: 'Co je provozní páka?', a: 'Nízká páka = více variabilních N, menší riziko | Vysoká páka = více fixních N, větší riziko i potenciál zisku' },
-            { category: 'naklady', q: 'Co jsou utopené náklady (sunk costs)?', a: 'Vynaloženy v minulosti, nelze je změnit - pro rozhodování je vyloučit!' },
-            { category: 'naklady', q: 'Co jsou oportunitní náklady?', a: 'Náklady obětované příležitosti = ušlý zisk z nepřijaté alternativy' },
-            { category: 'naklady', q: '⚠️ TEST: Jaké jsou kalkulační druhy nákladů (5)?', a: '1. Kalkulační odpisy, 2. Kalkulační úroky, 3. Kalkulační rizikové přirážky, 4. Kalkulační podnikatelská mzda, 5. Kalkulační nájemné' },
-            { category: 'naklady', q: 'Co jsou kalkulační odpisy?', a: 'Skutečné opotřebení, reprodukční cena, i po odepsání ve FÚ' },
-            { category: 'naklady', q: 'Co jsou kalkulační úroky?', a: 'Ušlý výnos z vázaného kapitálu (oportunitní náklad)' },
-            { category: 'naklady', q: 'Co jsou kalkulační rizikové přirážky?', a: 'Vnitřní ocenění rizika spojené s aktivitou' },
-            { category: 'naklady', q: 'Co je kalkulační podnikatelská mzda?', a: 'Pro živnostníky, kteří nemají standardní mzdu' },
-            { category: 'naklady', q: 'Co je kalkulační nájemné?', a: 'Ušlý výnos z vlastních prostor (kdyby byly pronajaty)' },
+            // OKRUH 2 - Význam nákladů v podnikovém řízení
+            { okruh: 2, category: 'naklady', q: 'K čemu se využívají informace o nákladech?', a: 'Cenová rozhodování, plánování výroby (Target Costing), rozpočetnictví, měření výkonnosti, vykazování externím subjektům' },
+            { okruh: 2, category: 'naklady', q: '⚠️ TEST: Jak se změnila struktura nákladů od 1. pol. 20. stol.?', a: 'Dříve režijní N cca 10%, dnes cca 50% (služby až 80%) - dramatický nárůst režie na úkor přímých N' },
+            { okruh: 2, category: 'naklady', q: 'Jaké jsou příčiny změn struktury nákladů (1950-2015)?', a: 'Levnější materiály, růst automatizace, customizace, nárůst režijních činností, komplexní produkty, zkracování životního cyklu' },
+            { okruh: 2, category: 'naklady', q: 'Jaké je finanční pojetí nákladů?', a: 'Úbytek ekonomického prospěchu = úbytek aktiv nebo přírůstek dluhů' },
+            { okruh: 2, category: 'naklady', q: 'Jaké je hodnotové (manažerské) pojetí nákladů?', a: 'Účelné vynaložení ekonomických zdrojů' },
+            { okruh: 2, category: 'naklady', q: 'Co je druhové členění nákladů?', a: 'Dle spotřebovaného externího vstupu: materiál, osobní N, odpisy, externí služby, finanční N' },
+            { okruh: 2, category: 'naklady', q: 'Co jsou technologické náklady?', a: 'Náklady vyvolané technologií výroby' },
+            { okruh: 2, category: 'naklady', q: 'Co jsou jednicové náklady?', a: 'Náklady přímo přiřaditelné jednotce výkonu' },
+            { okruh: 2, category: 'naklady', q: 'Co jsou režijní náklady?', a: 'Náklady na technologický proces jako celek + obsluha a řízení' },
+            { okruh: 2, category: 'naklady', q: 'Co jsou přímé vs nepřímé náklady?', a: 'Přímé: přímo souvisí s konkrétním výkonem | Nepřímé: nevážou se k jednomu druhu výkonu' },
+            { okruh: 2, category: 'naklady', q: 'Co jsou variabilní náklady?', a: 'Náklady, které se mění s objemem výroby' },
+            { okruh: 2, category: 'naklady', q: 'Co jsou fixní náklady?', a: 'Náklady neměnné v určitém rozpětí = kapacitní náklady' },
+            { okruh: 2, category: 'naklady', q: 'Co jsou smíšené (semivariabilní) náklady?', a: 'Obsahují fixní + variabilní složku (např. energie)' },
+            { okruh: 2, category: 'naklady', q: '⚠️ TEST: Co jsou Sticky costs (strnulé náklady)?', a: 'Náklady reagují asymetricky: při růstu aktivity rostou více, při poklesu neklesají proporcionálně (pomalá manažerská reakce)' },
+            { okruh: 2, category: 'naklady', q: '⚠️ TEST: Co je variabilizace nákladů?', a: 'Snaha zvýšit podíl variabilních N na úkor fixních - agenturní pracovníci, outsourcing, servisní smlouvy' },
+            { okruh: 2, category: 'naklady', q: 'Co je marže (krycí příspěvek)?', a: 'Cena − variabilní náklady = příspěvek na úhradu fixních N a tvorbu zisku' },
+            { okruh: 2, category: 'naklady', q: 'Co je analýza bodu zvratu?', a: 'Zjišťuje, od kdy je podnik ziskový (kdy tržby pokryjí všechny náklady)' },
+            { okruh: 2, category: 'naklady', q: 'Co je provozní páka?', a: 'Nízká páka = více variabilních N, menší riziko | Vysoká páka = více fixních N, větší riziko i potenciál zisku' },
+            { okruh: 2, category: 'naklady', q: 'Co jsou utopené náklady (sunk costs)?', a: 'Vynaloženy v minulosti, nelze je změnit - pro rozhodování je vyloučit!' },
+            { okruh: 2, category: 'naklady', q: 'Co jsou oportunitní náklady?', a: 'Náklady obětované příležitosti = ušlý zisk z nepřijaté alternativy' },
+            { okruh: 2, category: 'naklady', q: '⚠️ TEST: Jaké jsou kalkulační druhy nákladů (5)?', a: '1. Kalkulační odpisy, 2. Kalkulační úroky, 3. Kalkulační rizikové přirážky, 4. Kalkulační podnikatelská mzda, 5. Kalkulační nájemné' },
+            { okruh: 2, category: 'naklady', q: 'Co jsou kalkulační odpisy?', a: 'Skutečné opotřebení, reprodukční cena, i po odepsání ve FÚ' },
+            { okruh: 2, category: 'naklady', q: 'Co jsou kalkulační úroky?', a: 'Ušlý výnos z vázaného kapitálu (oportunitní náklad)' },
+            { okruh: 2, category: 'naklady', q: 'Co jsou kalkulační rizikové přirážky?', a: 'Vnitřní ocenění rizika spojené s aktivitou' },
+            { okruh: 2, category: 'naklady', q: 'Co je kalkulační podnikatelská mzda?', a: 'Pro živnostníky, kteří nemají standardní mzdu' },
+            { okruh: 2, category: 'naklady', q: 'Co je kalkulační nájemné?', a: 'Ušlý výnos z vlastních prostor (kdyby byly pronajaty)' },
+
+            // OKRUH 3 - Nákladové kalkulace
+            { okruh: 3, category: 'kalkulace', q: 'Co je cost tracing (přímé náklady)?', a: 'Přímé N lze přesně přiřadit nákladovému objektu' },
+            { okruh: 3, category: 'kalkulace', q: 'Co je cost allocation (nákladová alokace)?', a: 'Nepřímé N nelze přímo přiřadit, musí se rozvrhnout' },
+            { okruh: 3, category: 'kalkulace', q: 'Co je rozvrhová základna (allocation base)?', a: 'Veličina používaná pro alokaci nepřímých nákladů' },
+            { okruh: 3, category: 'kalkulace', q: 'Jaký je rozdíl mezi příčinnou a arbitrární alokací?', a: 'Příčinná: základna = skutečná příčina vzniku N | Arbitrární: svévolná, neodráží skutečnou závislost' },
+            { okruh: 3, category: 'kalkulace', q: 'Co je nákladový objekt (cost object)?', a: 'Aktivita nebo výkon, pro který se samostatně sledují náklady' },
+            { okruh: 3, category: 'kalkulace', q: 'Co je kalkulační vzorec?', a: 'Soupis jednotlivých druhů nákladů v kalkulaci (přímý materiál, přímé mzdy, režie...)' },
+            { okruh: 3, category: 'kalkulace', q: '⚠️ TEST: Jaké jsou základní typy nákladových kalkulací?', a: 'Absorpční (úplných N): zahrnuje VŠECHNY náklady | Neabsorpční (neúplných N): jen variabilní N' },
+            { okruh: 3, category: 'kalkulace', q: '⚠️ TEST: Jaký je rozdíl mezi zakázkovou a hromadnou výrobou?', a: 'Zakázková: různorodé produkty, individuální kalkulace, přirážková metoda | Hromadná: identické výrobky, průměrné N, procesní kalkulace' },
+            { okruh: 3, category: 'kalkulace', q: 'Co je kusovník (bill of materials)?', a: 'Dokument specifikující typ a množství přímého materiálu na 1 ks výrobku' },
+            { okruh: 3, category: 'kalkulace', q: 'Co je zakázkový list (job cost sheet)?', a: 'Evidence materiálu, práce a režie na konkrétní zakázku' },
+
+            // Přirážková kalkulace
+            { okruh: 3, category: 'prirazky', q: 'Jak se počítá režijní přirážka?', a: 'Režijní přirážka = režijní N / rozvrhová základna' },
+            { okruh: 3, category: 'prirazky', q: 'Jaké jsou typy rozvrhových základen?', a: 'Peněžní: přirážka v % (přímé mzdy) | Naturální: sazba v Kč na jednotku (hodiny) - lepší vypovídací schopnost' },
+            { okruh: 3, category: 'prirazky', q: 'Jaký je rozdíl mezi sumační a diferencovanou kalkulací?', a: 'Sumační: jedna základna pro všechny režie (jednodušší) | Diferencovaná: rozdělení režie do skupin (přesnější)' },
+            { okruh: 3, category: 'prirazky', q: '⚠️ TEST: Jaký je rozdíl mezi celopodnikovou a střediskovou sazbou?', a: 'Celopodniková (blanket): jedna sazba pro celou organizaci | Středisková: individuální sazby pro útvary/střediska' },
+            { okruh: 3, category: 'prirazky', q: 'V čem je přirážková kalkulace nepřesná?', a: 'Režie tvoří cca 50% N, menší příčinný vztah mezi režií a přímými N, NADHODNOCUJE průměrné produkty, PODHODNOCUJE speciální produkty' },
+            { okruh: 3, category: 'prirazky', q: 'Co je efekt nákupního košíku?', a: 'Negativní dopad nesprávného přiřazení režie - růst režijních N vede k dalším navázaným nákladům' },
+
+            // Kalkulace variabilních nákladů
+            { okruh: 3, category: 'kvn', q: 'K čemu slouží kalkulace variabilních nákladů?', a: 'Pro krátkodobé rozhodování! Oddělené sledování variabilních a fixních N' },
+            { okruh: 3, category: 'kvn', q: 'Jaké jsou 3 fáze kalkulace variabilních N?', a: '1. Příspěvek na úhradu u = cena - variabilní N | 2. Celkový příspěvek U = součet všech u | 3. Zisk = U - fixní N' },
+            { okruh: 3, category: 'kvn', q: 'Co je hrubé rozpětí (marže)?', a: 'Cena - přímé náklady' },
+            { okruh: 3, category: 'kvn', q: 'Co je hrubá rentabilita?', a: 'Marže / cena (relativní příspěvek)' },
+            { okruh: 3, category: 'kvn', q: 'Jak postupovat při omezené kapacitě?', a: 'Přepočítat marži na jednotku omezujícího činitele!' },
+            { okruh: 3, category: 'kvn', q: 'Jaké jsou výhody kalkulace variabilních N?', a: 'Dobré pro rozhodování při pevné kapacitě, sortimentní výhodnost, cenové změny, make or buy, eliminuje nepřesné přiřazení fixních N' },
+            { okruh: 3, category: 'kvn', q: 'Jaké jsou nevýhody kalkulace variabilních N?', a: 'Omezené info o struktuře a příčinách fixních/režijních nákladů' },
+
+            // OKRUH 4 - Procesní kalkulace ABC
+            // ABC základy
+            { okruh: 4, category: 'abc', q: 'Co je ABC kalkulace?', a: 'Activity-Based Costing = rozvrhování nákladů pomocí aktivit, měření skutečných fyzických výkonů' },
+            { okruh: 4, category: 'abc', q: 'Jaká je hlavní výhoda ABC oproti tradiční kalkulaci?', a: 'Eliminuje paušalizování N, odhaluje skutečnou příčinu vzniku nákladů (ne objemové alokace)' },
+            { okruh: 4, category: 'abc', q: 'Jaké jsou 3 kroky toku nákladů v ABC?', a: '1. Přiřazení N aktivitám | 2. Zjištění celkových N aktivity, stanovení N na jednotku | 3. Přiřazení N nákladovému objektu' },
+            { okruh: 4, category: 'abc', q: '⚠️ TEST: Jaká je klasifikace nákladů v ABC?', a: 'Primární aktivity: přidávají hodnotu (zákazník ochoten zaplatit) | Podpůrné aktivity: nepřidávají hodnotu' },
+            { okruh: 4, category: 'abc', q: 'Co je aktivita v ABC?', a: 'Homogenní soubor činností vedoucí k určitému cíli (nakupování, příjem materiálu, balení, fakturace...)' },
+            { okruh: 4, category: 'abc', q: '⚠️ TEST: Jaké jsou vztahové veličiny (cost drivers)?', a: 'Transakční: počet výkonů (objednávky, kontroly) | Časové: množství času (hodiny) | Silové: přímé měření spotřeby' },
+            { okruh: 4, category: 'abc', q: 'Co je MVA, CNA a JNA?', a: 'MVA = míra výkonu aktivity (kolik jednotek) | CNA = celkové N aktivity | JNA = jednotkové N aktivity (CNA/MVA)' },
+            { okruh: 4, category: 'abc', q: 'Co je účet aktivit (Bill of Activities)?', a: 'Stanovuje kolik jednotek aktivity daný objekt spotřeboval, popisuje cestu objektu podnikem' },
+
+            // Aktivity - hierarchie
+            { okruh: 4, category: 'aktivity', q: 'Jaké jsou 3 pohledy na aktivity?', a: 'Fyzický: viditelné činnosti (montáž) | Logický: pohled kvality | Nákladový: soustřeďuje veškeré N' },
+            { okruh: 4, category: 'aktivity', q: 'Co jsou jednotkové aktivity (unit-level)?', a: 'Aktivity prováděné na každý kus výrobku' },
+            { okruh: 4, category: 'aktivity', q: 'Co jsou dávkové aktivity (batch-level)?', a: 'Aktivity na dávku výrobků (přestavba stroje, nový produkt)' },
+            { okruh: 4, category: 'aktivity', q: 'Co jsou aktivity podpory produktů (product-sustaining)?', a: 'Podpora celé produktové řady (projektová dokumentace)' },
+            { okruh: 4, category: 'aktivity', q: 'Co jsou zákaznické aktivity (customer-related)?', a: 'Aktivity spojené se zákazníky (získání nového klienta)' },
+            { okruh: 4, category: 'aktivity', q: 'Co jsou celopodnikové aktivity (facility-sustaining)?', a: 'Infrastruktura podniku, nelze přiřadit konkrétním objektům' },
+            { okruh: 4, category: 'aktivity', q: '⚠️ TEST: Jakých je 5 etap tvorby ABC systému?', a: '1. Úprava účetních dat | 2. Definice struktury ABC | 3. Procesní nákladová analýza | 4. Analýza aktivit | 5. Přiřazení N objektům' },
+
+            // ABM řízení
+            { okruh: 4, category: 'abm', q: 'Co je Activity-Based Management (ABM)?', a: 'Řízení založené na aktivitách - využití ABC informací pro rozhodování' },
+            { okruh: 4, category: 'abm', q: 'Jaké informace ABC poskytuje?', a: 'Zpětná analýza N, měření výkonu aktivit, analýza ziskovosti, multidimenzionální analýza, modelace scénářů' },
+            { okruh: 4, category: 'abm', q: 'Co je NNA (nevyužité N aktivity)?', a: 'NNA = CNA × (1 - Qskut/Qmax) - náklady nevyužité kapacity' },
+            { okruh: 4, category: 'abm', q: 'Co je analýza procesů a aktivit (PAA)?', a: 'Analýza hodnotového řetězce, definice výstupů procesů, flow-chart, dekompozice procesů' },
+            { okruh: 4, category: 'abm', q: 'Proč je čas významný nositel nákladů?', a: 'N související s držením v inventáři, účtování s časovou hodnotou peněz, reziduální zisk' },
+            { okruh: 4, category: 'abm', q: 'Co zahrnuje řízení plýtvání a kvality v ABM?', a: 'Kvantifikace nevyužitých fixních N aktivit, N spojené s nedostatečnou kvalitou' },
         ];
 
         let cards = [...allCards];
         let currentCardIndex = 0;
         let currentMode = 'flashcards';
+        let currentOkruh = 'all';
         let currentCategory = 'all';
 
         // Quiz variables
@@ -501,14 +679,69 @@
         let score = 0;
         let answered = false;
 
-        function filterCards() {
-            if (currentCategory === 'all') {
-                cards = [...allCards];
+        function updateCategoryTabs() {
+            // Získej unikátní kategorie pro aktuální okruh
+            let categories = [];
+            if (currentOkruh === 'all') {
+                categories = [...new Set(allCards.map(c => c.category))];
             } else {
-                cards = allCards.filter(c => c.category === currentCategory);
+                categories = [...new Set(allCards.filter(c => c.okruh === currentOkruh).map(c => c.category))];
             }
+
+            let html = '<button class="category-tab active" onclick="setCategory(\'all\')">Vše</button>';
+            categories.forEach(cat => {
+                html += `<button class="category-tab" onclick="setCategory('${cat}')">${categoryNames[cat] || cat}</button>`;
+            });
+            document.getElementById('category-tabs').innerHTML = html;
+        }
+
+        function updateOkruhInfo() {
+            const infoEl = document.getElementById('okruh-info');
+            const countEl = document.getElementById('okruh-count');
+
+            if (currentOkruh === 'all') {
+                infoEl.querySelector('h3').textContent = 'Všechny okruhy';
+                countEl.textContent = `${allCards.length} kartiček`;
+            } else {
+                const info = okruhyInfo[currentOkruh];
+                infoEl.querySelector('h3').textContent = `${info.emoji} ${info.name}`;
+                const count = allCards.filter(c => c.okruh === currentOkruh).length;
+                countEl.textContent = `${count} kartiček`;
+            }
+        }
+
+        function filterCards() {
+            let filtered = [...allCards];
+
+            // Filtruj podle okruhu
+            if (currentOkruh !== 'all') {
+                filtered = filtered.filter(c => c.okruh === currentOkruh);
+            }
+
+            // Filtruj podle kategorie
+            if (currentCategory !== 'all') {
+                filtered = filtered.filter(c => c.category === currentCategory);
+            }
+
+            cards = filtered;
             currentCardIndex = 0;
             updateFlashcard();
+        }
+
+        function setOkruh(okruh) {
+            currentOkruh = okruh;
+            currentCategory = 'all';
+
+            document.querySelectorAll('.okruh-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+
+            updateOkruhInfo();
+            updateCategoryTabs();
+            filterCards();
+
+            if (currentMode === 'quiz') {
+                startQuiz();
+            }
         }
 
         function setCategory(cat) {
@@ -655,6 +888,8 @@
         }
 
         // Initialize
+        updateOkruhInfo();
+        updateCategoryTabs();
         updateFlashcard();
     </script>
 </body>
