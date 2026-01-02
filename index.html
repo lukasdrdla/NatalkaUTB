@@ -570,6 +570,216 @@
             }
         }
 
+        /* Points and Shop */
+        .points-display {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            padding: 12px 25px;
+            border-radius: 20px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #8b4513;
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .shop-btn {
+            background: linear-gradient(135deg, #ff6b9d 0%, #d63384 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 20px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(214, 51, 132, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .shop-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(214, 51, 132, 0.4);
+        }
+
+        .shop-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .shop-modal.active {
+            display: flex;
+        }
+
+        .shop-content {
+            background: white;
+            border-radius: 25px;
+            padding: 30px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(214, 51, 132, 0.3);
+            border: 3px solid #ffb6c1;
+        }
+
+        .shop-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #ffb6c1;
+        }
+
+        .shop-header h2 {
+            color: #d63384;
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        .close-shop {
+            background: #ff6b9d;
+            color: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .close-shop:hover {
+            transform: rotate(90deg);
+        }
+
+        .shop-balance {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #8b4513;
+            margin-bottom: 15px;
+        }
+
+        .shop-countdown {
+            background: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 100%);
+            padding: 12px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 25px;
+        }
+
+        .shop-countdown #countdownTimer {
+            color: #d63384;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .shop-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .shop-item {
+            background: linear-gradient(135deg, #fff0f5 0%, #ffe4ec 100%);
+            border: 2px solid #ffb6c1;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .shop-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(214, 51, 132, 0.2);
+        }
+
+        .shop-item-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .shop-item-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #d63384;
+            margin-bottom: 8px;
+        }
+
+        .shop-item-price {
+            font-size: 1.1rem;
+            color: #8b4513;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .shop-item-btn {
+            background: linear-gradient(135deg, #ff6b9d 0%, #d63384 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            width: 100%;
+        }
+
+        .shop-item-btn:hover {
+            opacity: 0.9;
+        }
+
+        .shop-item-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .shop-item.purchased {
+            opacity: 0.6;
+            border-color: #90ee90;
+            background: linear-gradient(135deg, #f0fff0 0%, #e0ffe0 100%);
+        }
+
+        .earned-points-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            padding: 30px 40px;
+            border-radius: 20px;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #8b4513;
+            box-shadow: 0 10px 40px rgba(255, 215, 0, 0.6);
+            z-index: 3000;
+            animation: popup-show 0.5s ease-out forwards;
+        }
+
+        @keyframes popup-show {
+            0% { transform: translate(-50%, -50%) scale(0); }
+            50% { transform: translate(-50%, -50%) scale(1.1); }
+            100% { transform: translate(-50%, -50%) scale(1); }
+        }
+
         /* Responsive */
         @media (max-width: 600px) {
             h1 { font-size: 1.8rem; }
@@ -599,6 +809,20 @@
                 font-size: 1.1rem;
                 padding: 15px 20px;
                 max-width: 180px;
+            }
+
+            .shop-items {
+                grid-template-columns: 1fr;
+            }
+
+            .points-display {
+                font-size: 1rem;
+                padding: 10px 20px;
+            }
+
+            .shop-btn {
+                font-size: 1rem;
+                padding: 10px 20px;
             }
         }
     </style>
@@ -655,6 +879,17 @@
             <div class="hearts">💕 ✨ 💕</div>
             <h1>Manažerské účetnictví</h1>
             <p class="subtitle">Tvůj osobní průvodce studiem 🌸</p>
+
+            <!-- Body a obchod -->
+            <div style="margin-top: 20px; display: flex; gap: 15px; justify-content: center; align-items: center; flex-wrap: wrap;">
+                <div class="points-display" id="pointsDisplay">
+                    <span style="font-size: 1.5rem;">💎</span>
+                    <span id="pointsCount">0</span> bodů
+                </div>
+                <button class="shop-btn" onclick="openShop()">
+                    🛍️ Obchůdek
+                </button>
+            </div>
         </header>
 
         <div class="mode-selection">
@@ -730,6 +965,23 @@
                 <p id="final-score">Tvoje skóre: 0/10</p>
                 <button class="nav-btn" onclick="restartQuiz()" style="margin-top: 20px;">🔄 Zkusit znovu</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Shop Modal -->
+    <div class="shop-modal" id="shopModal" onclick="if(event.target === this) closeShop()">
+        <div class="shop-content">
+            <div class="shop-header">
+                <h2>🛍️ Obchůdek s odměnami 💕</h2>
+                <button class="close-shop" onclick="closeShop()">✖️</button>
+            </div>
+            <div class="shop-balance">
+                Tvoje body: <span id="shopPoints">0</span> 💎
+            </div>
+            <div class="shop-countdown" id="shopCountdown">
+                🕐 Obnovení obchodu za: <span id="countdownTimer">--:--:--</span>
+            </div>
+            <div class="shop-items" id="shopItems"></div>
         </div>
     </div>
 
@@ -1447,22 +1699,200 @@
 
             const percentage = Math.round((score / quizQuestions.length) * 100);
             let message = '';
-            if (percentage >= 90) message = '🌟 Úžasné! Jsi hvězda! 🌟';
-            else if (percentage >= 70) message = '💕 Skvělá práce! 💕';
-            else if (percentage >= 50) message = '✨ Dobrý základ, pokračuj! ✨';
-            else message = '🌸 Nevzdávej to, zkus to znovu! 🌸';
+            let earnedPoints = 0;
 
-            document.getElementById('final-score').innerHTML = `Tvoje skóre: ${score}/${quizQuestions.length} (${percentage}%)<br><br>${message}`;
+            // Vypočítej odměnu podle úspěšnosti
+            if (percentage >= 90) {
+                message = '🌟 Úžasné! Jsi hvězda! 🌟';
+                earnedPoints = score * 15; // 15 bodů za správnou odpověď při 90%+
+            } else if (percentage >= 70) {
+                message = '💕 Skvělá práce! 💕';
+                earnedPoints = score * 12; // 12 bodů za správnou odpověď při 70-89%
+            } else if (percentage >= 50) {
+                message = '✨ Dobrý základ, pokračuj! ✨';
+                earnedPoints = score * 8; // 8 bodů za správnou odpověď při 50-69%
+            } else {
+                message = '🌸 Nevzdávej to, zkus to znovu! 🌸';
+                earnedPoints = score * 5; // 5 bodů za správnou odpověď pod 50%
+            }
+
+            // Přidej body
+            if (earnedPoints > 0) {
+                setTimeout(() => {
+                    addPoints(earnedPoints);
+                }, 500);
+            }
+
+            document.getElementById('final-score').innerHTML = `
+                Tvoje skóre: ${score}/${quizQuestions.length} (${percentage}%)<br><br>
+                ${message}<br><br>
+                <span style="color: #ffd700; font-size: 1.5rem;">+${earnedPoints} 💎 bodů!</span>
+            `;
         }
 
         function restartQuiz() {
             startQuiz();
         }
 
+        // Points and Shop System
+        let userPoints = parseInt(localStorage.getItem('quizPoints') || '0');
+
+        // Kontrola a refresh obchodu každý den v 10:00
+        function checkShopRefresh() {
+            const now = new Date();
+            const lastRefresh = localStorage.getItem('lastShopRefresh');
+
+            // Vytvoř dnešní 10:00
+            const todayAt10AM = new Date();
+            todayAt10AM.setHours(10, 0, 0, 0);
+
+            // Pokud je teď po 10:00 a poslední refresh byl před dnešními 10:00
+            if (!lastRefresh || new Date(lastRefresh) < todayAt10AM && now >= todayAt10AM) {
+                // Resetuj zakoupené položky
+                const hadPurchases = localStorage.getItem('purchasedItems');
+                localStorage.setItem('purchasedItems', '[]');
+                localStorage.setItem('lastShopRefresh', now.toISOString());
+
+                // Zobraz notifikaci pokud byly nějaké nákupy
+                if (hadPurchases && JSON.parse(hadPurchases).length > 0) {
+                    setTimeout(() => {
+                        const notification = document.createElement('div');
+                        notification.className = 'earned-points-popup';
+                        notification.innerHTML = `🛍️ Obchod obnoven!<br><span style="font-size: 1.2rem;">Můžeš nakupovat znovu 💕</span>`;
+                        notification.style.background = 'linear-gradient(135deg, #ff6b9d 0%, #d63384 100%)';
+                        notification.style.color = 'white';
+                        document.body.appendChild(notification);
+
+                        setTimeout(() => {
+                            notification.remove();
+                        }, 3000);
+                    }, 1000);
+                }
+            }
+        }
+
+        const shopItems = [
+            { id: 1, name: 'Voda', icon: '💧', price: 60, description: 'Minerálka' },
+            { id: 2, name: 'Čaj', icon: '🍵', price: 80, description: 'Tvůj oblíbený čaj' },
+            { id: 3, name: 'Sladké pití', icon: '🥤', price: 100, description: 'Coca-Cola, Fanta, Sprite...' },
+            { id: 4, name: 'Náhodná sladkost', icon: '🍬', price: 120, description: 'Překvapení!' },
+            { id: 5, name: 'Tyčinky', icon: '🍫', price: 150, description: 'Čokoládové nebo proteínové' },
+            { id: 6, name: 'Masáž hlavy', icon: '💆‍♀️', price: 300, description: 'Relaxační masáž hlavy' },
+            { id: 7, name: 'Masáž noh', icon: '🦶', price: 350, description: 'Masáž unavených nožek' }
+        ];
+
+        function updatePointsDisplay() {
+            document.getElementById('pointsCount').textContent = userPoints;
+            document.getElementById('shopPoints').textContent = userPoints;
+        }
+
+        function savePoints() {
+            localStorage.setItem('quizPoints', userPoints.toString());
+        }
+
+        function addPoints(points) {
+            userPoints += points;
+            savePoints();
+            updatePointsDisplay();
+            // Popup odstraněn - body se zobrazí jen ve výsledcích
+        }
+
+        function updateCountdown() {
+            const now = new Date();
+            const nextRefresh = new Date();
+
+            // Zjisti příští 10:00
+            nextRefresh.setHours(10, 0, 0, 0);
+
+            // Pokud je už po 10:00 dnes, nastav na zítřejších 10:00
+            if (now >= nextRefresh) {
+                nextRefresh.setDate(nextRefresh.getDate() + 1);
+            }
+
+            // Vypočítej rozdíl
+            const diff = nextRefresh - now;
+
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            // Zobraz ve formátu HH:MM:SS
+            const timeString = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+            const timerElement = document.getElementById('countdownTimer');
+            if (timerElement) {
+                timerElement.textContent = timeString;
+            }
+        }
+
+        function openShop() {
+            document.getElementById('shopModal').classList.add('active');
+            renderShopItems();
+            updateCountdown(); // Aktualizuj odpočet při otevření
+        }
+
+        function closeShop() {
+            document.getElementById('shopModal').classList.remove('active');
+        }
+
+        function renderShopItems() {
+            const purchasedItems = JSON.parse(localStorage.getItem('purchasedItems') || '[]');
+            const shopItemsContainer = document.getElementById('shopItems');
+
+            shopItemsContainer.innerHTML = shopItems.map(item => {
+                const isPurchased = purchasedItems.includes(item.id);
+                const canAfford = userPoints >= item.price;
+
+                return `
+                    <div class="shop-item ${isPurchased ? 'purchased' : ''}">
+                        <div class="shop-item-icon">${item.icon}</div>
+                        <div class="shop-item-name">${item.name}</div>
+                        <div class="shop-item-price">${item.price} 💎</div>
+                        <button
+                            class="shop-item-btn"
+                            onclick="purchaseItem(${item.id}, ${item.price})"
+                            ${isPurchased || !canAfford ? 'disabled' : ''}
+                        >
+                            ${isPurchased ? '✅ Koupeno' : (canAfford ? '🛒 Koupit' : '🔒 Nemáš dost bodů')}
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function purchaseItem(itemId, price) {
+            if (userPoints >= price) {
+                userPoints -= price;
+                savePoints();
+                updatePointsDisplay();
+
+                // Ulož koupenou položku
+                const purchasedItems = JSON.parse(localStorage.getItem('purchasedItems') || '[]');
+                purchasedItems.push(itemId);
+                localStorage.setItem('purchasedItems', JSON.stringify(purchasedItems));
+
+                // Refresh shop
+                renderShopItems();
+
+                // Zobraz zprávu
+                const item = shopItems.find(i => i.id === itemId);
+                alert(`🎉 Gratuluju! Koupila sis: ${item.name}\n\nPřinesu ti to co nejdřív! 💕`);
+            }
+        }
+
         // Initialize
+        checkShopRefresh(); // Kontrola denního refreshe obchodu
         updateOkruhInfo();
         updateCategoryTabs();
         updateFlashcard();
+        updatePointsDisplay();
+
+        // Pravidelná kontrola refreshe každých 10 minut (pokud má otevřenou stránku přes 10:00)
+        setInterval(checkShopRefresh, 10 * 60 * 1000);
+
+        // Aktualizuj odpočet každou sekundu
+        setInterval(updateCountdown, 1000);
+        updateCountdown(); // Inicializuj hned
 
         // Cute Cat Messages Feature
         const catMessages = [
