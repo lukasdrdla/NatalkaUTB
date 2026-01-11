@@ -450,12 +450,180 @@
         .deco-3 { bottom: 20%; left: 8%; }
         .deco-4 { bottom: 10%; right: 10%; }
 
+        /* Cute Cat Message */
+        .cat-message {
+            position: fixed;
+            right: 30px;
+            bottom: -300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            z-index: 1000;
+            transition: bottom 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .cat-message.show {
+            bottom: 0px;
+        }
+
+        .cat-emoji {
+            font-size: 4rem;
+            animation: wave 1s ease-in-out infinite;
+            filter: drop-shadow(0 5px 15px rgba(214, 51, 132, 0.3));
+        }
+
+        .cat-container {
+            width: 150px;
+            height: 180px;
+            position: relative;
+        }
+
+        .cat-svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 5px 20px rgba(214, 51, 132, 0.3));
+        }
+
+        @keyframes wave-paw {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-15deg); }
+            75% { transform: rotate(15deg); }
+        }
+
+        .cat-paw-left {
+            animation: wave-paw 1.5s ease-in-out infinite;
+            transform-origin: 35% 70%;
+        }
+
+        .cat-paw-right {
+            animation: wave-paw 1.5s ease-in-out infinite 0.3s;
+            transform-origin: 65% 70%;
+        }
+
+        @keyframes look-around {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(-2px, -1px); }
+            50% { transform: translate(2px, 1px); }
+            75% { transform: translate(-1px, 2px); }
+        }
+
+        .cat-eye-shine {
+            animation: look-around 3s ease-in-out infinite;
+        }
+
+        /* Emoji efekty kolem kočičky */
+        .cat-emoji-effect {
+            position: absolute;
+            font-size: 1.5rem;
+            animation: float-emoji 2s ease-in-out infinite;
+        }
+
+        .emoji-left { top: 10px; left: -30px; }
+        .emoji-right { top: 10px; right: -30px; }
+        .emoji-top { top: -30px; left: 50%; transform: translateX(-50%); }
+
+        @keyframes float-emoji {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(10deg); }
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        .sparkle-effect {
+            animation: sparkle 1s ease-in-out infinite;
+        }
+
+        /* Blikající kurzor */
+        .typing-cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.2em;
+            background-color: white;
+            margin-left: 2px;
+            animation: blink-cursor 0.8s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink-cursor {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+
+        .speech-bubble {
+            background: linear-gradient(135deg, #ff6b9d 0%, #d63384 100%);
+            color: white;
+            padding: 20px 25px;
+            border-radius: 25px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(214, 51, 132, 0.4);
+            position: relative;
+            animation: bubble-bounce 0.5s ease-out;
+            max-width: 250px;
+            text-align: center;
+        }
+
+
+        @keyframes bubble-bounce {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .hearts-animation {
+            position: fixed;
+            right: 50px;
+            font-size: 1.5rem;
+            pointer-events: none;
+            animation: float-hearts 3s ease-out forwards;
+            z-index: 999;
+        }
+
+        @keyframes float-hearts {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-200px) scale(1.5);
+            }
+        }
+
         /* Responsive */
         @media (max-width: 600px) {
             h1 { font-size: 1.8rem; }
             .flashcard-front h3, .flashcard-back p { font-size: 1.1rem; }
             .mode-btn { padding: 12px 20px; font-size: 0.9rem; }
 
+            .cat-message.show {
+                right: 10px;
+                bottom: 20px;
+            }
+
+            .cat-emoji {
+                font-size: 3rem;
+            }
+
+            .cat-image {
+                width: 90px;
+                height: 90px;
+            }
+
+            .cat-container {
+                width: 120px;
+                height: 140px;
+            }
+
+            .speech-bubble {
+                font-size: 1.1rem;
+                padding: 15px 20px;
+                max-width: 180px;
+            }
         }
     </style>
 </head>
@@ -474,6 +642,17 @@
             <div class="hearts">💕 ✨ 💕</div>
             <h1>Manažerské účetnictví</h1>
             <p class="subtitle">Tvůj osobní průvodce studiem 🌸</p>
+
+            <!-- Body a obchod -->
+            <div style="margin-top: 20px; display: flex; gap: 15px; justify-content: center; align-items: center; flex-wrap: wrap;">
+                <div class="points-display" id="pointsDisplay">
+                    <span style="font-size: 1.5rem;">💎</span>
+                    <span id="pointsCount">0</span> bodů
+                </div>
+                <button class="shop-btn" onclick="openShop()">
+                    🛍️ Obchůdek
+                </button>
+            </div>
         </header>
 
         <div class="mode-selection">
@@ -549,6 +728,23 @@
                 <p id="final-score">Tvoje skóre: 0/10</p>
                 <button class="nav-btn" onclick="restartQuiz()" style="margin-top: 20px;">🔄 Zkusit znovu</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Shop Modal -->
+    <div class="shop-modal" id="shopModal" onclick="if(event.target === this) closeShop()">
+        <div class="shop-content">
+            <div class="shop-header">
+                <h2>🛍️ Obchůdek s odměnami 💕</h2>
+                <button class="close-shop" onclick="closeShop()">✖️</button>
+            </div>
+            <div class="shop-balance">
+                Tvoje body: <span id="shopPoints">0</span> 💎
+            </div>
+            <div class="shop-countdown" id="shopCountdown">
+                🕐 Obnovení obchodu za: <span id="countdownTimer">--:--:--</span>
+            </div>
+            <div class="shop-items" id="shopItems"></div>
         </div>
     </div>
 
@@ -708,6 +904,357 @@
         let score = 0;
         let answered = false;
 
+        // Kvízové otázky s podobnými odpověďmi
+        const quizDatabase = [
+            // OKRUH 1
+            {
+                okruh: 1,
+                q: 'Jaký je hlavní rozdíl v uživatelích Finančního a Manažerského účetnictví?',
+                correct: 'FÚ slouží externím uživatelům (investoři, banky), MÚ slouží interním manažerům',
+                wrong: [
+                    'FÚ slouží interním manažerům, MÚ slouží externím investorům',
+                    'FÚ slouží státu a bankám, MÚ slouží zaměstnancům podniku',
+                    'FÚ slouží akcionářům a vedení, MÚ slouží auditorům a státu'
+                ]
+            },
+            {
+                okruh: 1,
+                q: 'Na jaký časový horizont se primárně zaměřuje Manažerské účetnictví?',
+                correct: 'Budoucnost - plánování a predikce',
+                wrong: [
+                    'Minulost - analýza historických dat',
+                    'Současnost - aktuální stav podniku',
+                    'Střední období - 3-5 let'
+                ]
+            },
+            {
+                okruh: 1,
+                q: 'Jak je regulováno Manažerské účetnictví oproti Finančnímu?',
+                correct: 'MÚ není regulováno zákony, FÚ je zákonem regulováno',
+                wrong: [
+                    'MÚ je regulováno interními směrnicemi, FÚ mezinárodními standardy',
+                    'MÚ i FÚ jsou regulovány stejnými zákony',
+                    'MÚ je regulováno auditory, FÚ managementem'
+                ]
+            },
+            {
+                okruh: 1,
+                q: 'Jaká je I. vývojová etapa účetnictví?',
+                correct: 'Nákladové účetnictví - zaměření na minulost a evidenci nákladů',
+                wrong: [
+                    'Manažerské účetnictví - zaměření na budoucnost a plánování',
+                    'Finanční účetnictví - zaměření na výkazy pro investory',
+                    'Management nákladů - aktivní ovlivňování a strategie'
+                ]
+            },
+            {
+                okruh: 1,
+                q: 'Co je typické pro Anglosaský systém účetnictví?',
+                correct: 'US GAAP, IFRS | Uživatelé: investoři | Země: USA, UK',
+                wrong: [
+                    'IAS | Uživatelé: stát, banky | Země: Francie, Německo',
+                    'IFRS | Uživatelé: management | Země: ČR, Polsko',
+                    'US GAAP | Uživatelé: dodavatelé | Země: Japonsko, Čína'
+                ]
+            },
+            {
+                okruh: 1,
+                q: 'Jaké jednotky používá Manažerské účetnictví?',
+                correct: 'Peněžní i naturální jednotky (kusy, hodiny, kg...)',
+                wrong: [
+                    'Pouze peněžní jednotky v Kč a EUR',
+                    'Pouze naturální jednotky (bez peněžního vyjádření)',
+                    'Pouze relativní ukazatele v procentech'
+                ]
+            },
+
+            // OKRUH 2
+            {
+                okruh: 2,
+                q: 'Jak se změnila struktura nákladů od 1. poloviny 20. století?',
+                correct: 'Režijní náklady vzrostly z 10% na cca 50% (ve službách až 80%)',
+                wrong: [
+                    'Režijní náklady klesly z 50% na cca 10%',
+                    'Přímé náklady vzrostly z 30% na cca 70%',
+                    'Režijní náklady zůstaly stabilní kolem 25-30%'
+                ]
+            },
+            {
+                okruh: 2,
+                q: 'Co je finanční pojetí nákladů?',
+                correct: 'Úbytek ekonomického prospěchu = úbytek aktiv nebo přírůstek dluhů',
+                wrong: [
+                    'Přírůstek ekonomického prospěchu = přírůstek aktiv nebo úbytek dluhů',
+                    'Účelné vynaložení ekonomických zdrojů na dosažení cíle',
+                    'Spotřeba externích vstupů během účetního období'
+                ]
+            },
+            {
+                okruh: 2,
+                q: 'Co jsou variabilní náklady?',
+                correct: 'Náklady, které se mění s objemem výroby',
+                wrong: [
+                    'Náklady, které zůstávají stejné bez ohledu na objem výroby',
+                    'Náklady, které obsahují fixní i variabilní složku',
+                    'Náklady, které reagují asymetricky na změny objemu'
+                ]
+            },
+            {
+                okruh: 2,
+                q: 'Co jsou Sticky costs (strnulé náklady)?',
+                correct: 'Náklady reagují asymetricky: při růstu rostou více, při poklesu neklesají proporcionálně',
+                wrong: [
+                    'Náklady, které zůstávají fixní v jakémkoliv rozpětí aktivity',
+                    'Náklady, které rostou a klesají proporcionálně s objemem výroby',
+                    'Náklady, které nelze ovlivnit manažerským rozhodnutím'
+                ]
+            },
+            {
+                okruh: 2,
+                q: 'Co je marže (krycí příspěvek)?',
+                correct: 'Cena − variabilní náklady = příspěvek na úhradu fixních nákladů a zisku',
+                wrong: [
+                    'Cena − fixní náklady = příspěvek na úhradu variabilních nákladů',
+                    'Tržby − celkové náklady = čistý zisk',
+                    'Cena − přímé náklady = hrubá marže'
+                ]
+            },
+            {
+                okruh: 2,
+                q: 'Co jsou utopené náklady (sunk costs)?',
+                correct: 'Vynaloženy v minulosti, nelze je změnit - pro rozhodování je vyloučit!',
+                wrong: [
+                    'Náklady obětované příležitosti = ušlý zisk z nepřijaté alternativy',
+                    'Budoucí náklady, které ještě nebyly vynaloženy',
+                    'Náklady, které lze změnit manažerským rozhodnutím'
+                ]
+            },
+            {
+                okruh: 2,
+                q: 'Kolik je kalkulačních druhů nákladů?',
+                correct: '5 druhů: odpisy, úroky, rizikové přirážky, podnikatelská mzda, nájemné',
+                wrong: [
+                    '3 druhy: odpisy, úroky, rizikové přirážky',
+                    '7 druhů: odpisy, úroky, mzdy, materiál, energie, služby, daně',
+                    '4 druhy: materiál, mzdy, odpisy, ostatní'
+                ]
+            },
+            {
+                okruh: 2,
+                q: 'Co jsou oportunitní náklady?',
+                correct: 'Náklady obětované příležitosti = ušlý zisk z nepřijaté alternativy',
+                wrong: [
+                    'Náklady vynaložené v minulosti, které nelze změnit',
+                    'Náklady, které se mění s objemem výroby',
+                    'Náklady fixní v určitém rozpětí kapacity'
+                ]
+            },
+            {
+                okruh: 2,
+                q: 'Co je variabilizace nákladů?',
+                correct: 'Snaha zvýšit podíl variabilních nákladů na úkor fixních - agenturní pracovníci, outsourcing',
+                wrong: [
+                    'Snaha zvýšit podíl fixních nákladů pro stabilitu podniku',
+                    'Převod všech nákladů na režijní formou přirážek',
+                    'Eliminace variabilních nákladů pomocí automatizace'
+                ]
+            },
+
+            // OKRUH 3
+            {
+                okruh: 3,
+                q: 'Jaký je rozdíl mezi cost tracing a cost allocation?',
+                correct: 'Cost tracing = přímé náklady přesně přiřaditelné | Cost allocation = nepřímé náklady se rozvrhují',
+                wrong: [
+                    'Cost tracing = rozvrhování režie | Cost allocation = sledování variabilních nákladů',
+                    'Cost tracing = odhad budoucích nákladů | Cost allocation = evidence skutečných nákladů',
+                    'Cost tracing = fixní náklady | Cost allocation = variabilní náklady'
+                ]
+            },
+            {
+                okruh: 3,
+                q: 'Jaké jsou základní typy nákladových kalkulací?',
+                correct: 'Absorpční (úplných N): zahrnuje VŠECHNY náklady | Neabsorpční: jen variabilní náklady',
+                wrong: [
+                    'Přirážková: s režijními přirážkami | Procesní: bez režijních přirážek',
+                    'Předběžná: před výrobou | Výsledná: po výrobě',
+                    'Sumační: jedna přirážka | Diferencovaná: více přirážek'
+                ]
+            },
+            {
+                okruh: 3,
+                q: 'Jaký je rozdíl mezi zakázkovou a hromadnou výrobou?',
+                correct: 'Zakázková: různorodé produkty, přirážková metoda | Hromadná: identické výrobky, procesní kalkulace',
+                wrong: [
+                    'Zakázková: identické výrobky, nižší režie | Hromadná: různorodé produkty, vyšší režie',
+                    'Zakázková: malé série do 100 ks | Hromadná: velké série nad 1000 ks',
+                    'Zakázková: pouze absorpční kalkulace | Hromadná: pouze variabilní kalkulace'
+                ]
+            },
+            {
+                okruh: 3,
+                q: 'Jaký je rozdíl mezi celopodnikovou a střediskovou sazbou?',
+                correct: 'Celopodniková: jedna sazba pro celou organizaci | Středisková: individuální sazby pro útvary',
+                wrong: [
+                    'Celopodniková: pro fixní náklady | Středisková: pro variabilní náklady',
+                    'Celopodniková: peněžní jednotky | Středisková: naturální jednotky',
+                    'Celopodniková: pro přímé náklady | Středisková: pro nepřímé náklady'
+                ]
+            },
+            {
+                okruh: 3,
+                q: 'V čem je přirážková kalkulace nepřesná?',
+                correct: 'NADHODNOCUJE průměrné produkty, PODHODNOCUJE speciální produkty',
+                wrong: [
+                    'PODHODNOCUJE průměrné produkty, NADHODNOCUJE speciální produkty',
+                    'NADHODNOCUJE fixní náklady, PODHODNOCUJE variabilní náklady',
+                    'PODHODNOCUJE přímé náklady, NADHODNOCUJE režijní náklady'
+                ]
+            },
+            {
+                okruh: 3,
+                q: 'Jaké jsou 3 fáze kalkulace variabilních nákladů?',
+                correct: '1. u = cena - var.N | 2. U = součet u | 3. Zisk = U - fixní N',
+                wrong: [
+                    '1. Fixní N | 2. Variabilní N | 3. Celkové N',
+                    '1. Přímé N | 2. Nepřímé N | 3. Režijní N',
+                    '1. Materiál | 2. Mzdy | 3. Režie'
+                ]
+            },
+            {
+                okruh: 3,
+                q: 'Jaké jsou výhody kalkulace variabilních nákladů?',
+                correct: 'Dobré pro rozhodování při pevné kapacitě, eliminuje nepřesné přiřazení fixních N',
+                wrong: [
+                    'Poskytuje detailní informace o struktuře fixních nákladů',
+                    'Vhodné pro dlouhodobé strategické plánování',
+                    'Zahrnuje všechny náklady pro oceňování zásob'
+                ]
+            },
+            {
+                okruh: 3,
+                q: 'Co je hrubé rozpětí (marže)?',
+                correct: 'Cena - přímé náklady',
+                wrong: [
+                    'Cena - variabilní náklady',
+                    'Tržby - fixní náklady',
+                    'Cena - celkové náklady'
+                ]
+            },
+
+            // OKRUH 4
+            {
+                okruh: 4,
+                q: 'Co je ABC kalkulace?',
+                correct: 'Activity-Based Costing = rozvrhování nákladů pomocí aktivit, měření skutečných výkonů',
+                wrong: [
+                    'Automatic Budget Control = automatická kontrola rozpočtu pomocí IT systémů',
+                    'Absorption-Based Calculation = absorpční kalkulace s plnými náklady',
+                    'Advanced Business Costing = pokročilá kalkulace pro velké podniky'
+                ]
+            },
+            {
+                okruh: 4,
+                q: 'Jaká je hlavní výhoda ABC oproti tradiční kalkulaci?',
+                correct: 'Eliminuje paušalizování nákladů, odhaluje skutečnou příčinu vzniku nákladů',
+                wrong: [
+                    'Je levnější a rychlejší na implementaci',
+                    'Nevyžaduje detailní sledování aktivit',
+                    'Používá pouze jednu rozvrhovou základnu'
+                ]
+            },
+            {
+                okruh: 4,
+                q: 'Jaké jsou 3 kroky toku nákladů v ABC?',
+                correct: '1. Přiřazení N aktivitám | 2. N na jednotku aktivity | 3. Přiřazení N objektu',
+                wrong: [
+                    '1. Materiál | 2. Mzdy | 3. Režie',
+                    '1. Fixní N | 2. Variabilní N | 3. Smíšené N',
+                    '1. Plánování | 2. Realizace | 3. Kontrola'
+                ]
+            },
+            {
+                okruh: 4,
+                q: 'Jaká je klasifikace nákladů v ABC?',
+                correct: 'Primární aktivity: přidávají hodnotu | Podpůrné aktivity: nepřidávají hodnotu',
+                wrong: [
+                    'Přímé aktivity: měřitelné | Nepřímé aktivity: neměřitelné',
+                    'Fixní aktivity: stálé | Variabilní aktivity: měnící se',
+                    'Hlavní aktivity: výroba | Vedlejší aktivity: administrativa'
+                ]
+            },
+            {
+                okruh: 4,
+                q: 'Jaké jsou vztahové veličiny (cost drivers) v ABC?',
+                correct: 'Transakční: počet výkonů | Časové: množství času | Silové: přímé měření',
+                wrong: [
+                    'Peněžní: cena | Naturální: množství | Relativní: procenta',
+                    'Lineární: přímá závislost | Nelineární: nepřímá závislost',
+                    'Interní: uvnitř podniku | Externí: mimo podnik'
+                ]
+            },
+            {
+                okruh: 4,
+                q: 'Co znamená MVA, CNA a JNA?',
+                correct: 'MVA = míra výkonu aktivity | CNA = celkové N aktivity | JNA = jednotkové N (CNA/MVA)',
+                wrong: [
+                    'MVA = minimální variabilní N | CNA = celková nákladová alokace | JNA = jednotná norma amortizace',
+                    'MVA = manažerská varianta analýzy | CNA = controlling nových aktivit | JNA = jednotka nákladového účetnictví',
+                    'MVA = maximální výše aktivit | CNA = cílová nákladová analýza | JNA = jednotný normativ alokace'
+                ]
+            },
+            {
+                okruh: 4,
+                q: 'Co jsou jednotkové aktivity (unit-level)?',
+                correct: 'Aktivity prováděné na každý kus výrobku',
+                wrong: [
+                    'Aktivity prováděné na celou dávku výrobků',
+                    'Aktivity podporující celou produktovou řadu',
+                    'Aktivity infrastruktury podniku'
+                ]
+            },
+            {
+                okruh: 4,
+                q: 'Co jsou dávkové aktivity (batch-level)?',
+                correct: 'Aktivity na dávku výrobků (přestavba stroje, nový produkt)',
+                wrong: [
+                    'Aktivity prováděné na každý jednotlivý kus',
+                    'Aktivity související se zákazníky',
+                    'Aktivity celopodnikové infrastruktury'
+                ]
+            },
+            {
+                okruh: 4,
+                q: 'Kolik je etap tvorby ABC systému?',
+                correct: '5 etap: úprava dat, definice struktury, procesní analýza, analýza aktivit, přiřazení N',
+                wrong: [
+                    '3 etapy: plánování, realizace, kontrola',
+                    '7 etap: iniciace, plán, design, implementace, testování, nasazení, vyhodnocení',
+                    '4 etapy: sběr dat, klasifikace, kalkulace, reporting'
+                ]
+            },
+            {
+                okruh: 4,
+                q: 'Co je Activity-Based Management (ABM)?',
+                correct: 'Řízení založené na aktivitách - využití ABC informací pro rozhodování',
+                wrong: [
+                    'Automatizované řízeníBusinessu pomocí IT systémů',
+                    'Absorpční Bilancování Managementu pro reporting',
+                    'Advanced Budget Monitoring - pokročilé sledování rozpočtu'
+                ]
+            },
+            {
+                okruh: 4,
+                q: 'Co je NNA (nevyužité náklady aktivity)?',
+                correct: 'NNA = CNA × (1 - Qskut/Qmax) - náklady nevyužité kapacity',
+                wrong: [
+                    'NNA = CNA × (Qskut/Qmax) - náklady využité kapacity',
+                    'NNA = JNA × počet aktivit - náklady spotřebované aktivity',
+                    'NNA = fixní N - variabilní N - rozdíl nákladů'
+                ]
+            }
+        ];
+
         function updateCategoryTabs() {
             // Získej unikátní kategorie pro aktuální okruh
             let categories = [];
@@ -831,7 +1378,17 @@
 
         // Quiz functions
         function startQuiz() {
-            quizQuestions = cards.sort(() => Math.random() - 0.5).slice(0, Math.min(10, cards.length));
+            // Filtruj otázky podle vybraného okruhu
+            let availableQuestions = quizDatabase;
+            if (currentOkruh !== 'all') {
+                availableQuestions = quizDatabase.filter(q => q.okruh === currentOkruh);
+            }
+
+            // Vyber náhodných 10 otázek (nebo méně, pokud jich není dost)
+            quizQuestions = availableQuestions
+                .sort(() => Math.random() - 0.5)
+                .slice(0, Math.min(15, availableQuestions.length));
+
             currentQuizIndex = 0;
             score = 0;
             answered = false;
@@ -851,16 +1408,17 @@
             const q = quizQuestions[currentQuizIndex];
             document.getElementById('quiz-question').textContent = q.q;
 
-            // Generate options
-            let options = [q.a];
-            const otherAnswers = allCards.filter(c => c.a !== q.a).sort(() => Math.random() - 0.5);
-            for (let i = 0; i < 3 && i < otherAnswers.length; i++) {
-                options.push(otherAnswers[i].a);
-            }
+            // Vytvoř možnosti z předdefinovaných odpovědí
+            let options = [
+                q.correct,
+                ...q.wrong
+            ];
+
+            // Zamíchej odpovědi
             options = options.sort(() => Math.random() - 0.5);
 
             const optionsHtml = options.map((opt, i) =>
-                `<div class="quiz-option" onclick="selectAnswer(${i}, '${opt.replace(/'/g, "\\'")}', '${q.a.replace(/'/g, "\\'")}')">${opt}</div>`
+                `<div class="quiz-option" onclick="selectAnswer(${i}, '${opt.replace(/'/g, "\\'")}', '${q.correct.replace(/'/g, "\\'")}')">${opt}</div>`
             ).join('');
 
             document.getElementById('quiz-options').innerHTML = optionsHtml;
@@ -904,22 +1462,200 @@
 
             const percentage = Math.round((score / quizQuestions.length) * 100);
             let message = '';
-            if (percentage >= 90) message = '🌟 Úžasné! Jsi hvězda! 🌟';
-            else if (percentage >= 70) message = '💕 Skvělá práce! 💕';
-            else if (percentage >= 50) message = '✨ Dobrý základ, pokračuj! ✨';
-            else message = '🌸 Nevzdávej to, zkus to znovu! 🌸';
+            let earnedPoints = 0;
 
-            document.getElementById('final-score').innerHTML = `Tvoje skóre: ${score}/${quizQuestions.length} (${percentage}%)<br><br>${message}`;
+            // Vypočítej odměnu podle úspěšnosti
+            if (percentage >= 90) {
+                message = '🌟 Úžasné! Jsi hvězda! 🌟';
+                earnedPoints = score * 15; // 15 bodů za správnou odpověď při 90%+
+            } else if (percentage >= 70) {
+                message = '💕 Skvělá práce! 💕';
+                earnedPoints = score * 12; // 12 bodů za správnou odpověď při 70-89%
+            } else if (percentage >= 50) {
+                message = '✨ Dobrý základ, pokračuj! ✨';
+                earnedPoints = score * 8; // 8 bodů za správnou odpověď při 50-69%
+            } else {
+                message = '🌸 Nevzdávej to, zkus to znovu! 🌸';
+                earnedPoints = score * 5; // 5 bodů za správnou odpověď pod 50%
+            }
+
+            // Přidej body
+            if (earnedPoints > 0) {
+                setTimeout(() => {
+                    addPoints(earnedPoints);
+                }, 500);
+            }
+
+            document.getElementById('final-score').innerHTML = `
+                Tvoje skóre: ${score}/${quizQuestions.length} (${percentage}%)<br><br>
+                ${message}<br><br>
+                <span style="color: #ffd700; font-size: 1.5rem;">+${earnedPoints} 💎 bodů!</span>
+            `;
         }
 
         function restartQuiz() {
             startQuiz();
         }
 
+        // Points and Shop System
+        let userPoints = parseInt(localStorage.getItem('quizPoints') || '0');
+
+        // Kontrola a refresh obchodu každý den v 10:00
+        function checkShopRefresh() {
+            const now = new Date();
+            const lastRefresh = localStorage.getItem('lastShopRefresh');
+
+            // Vytvoř dnešní 10:00
+            const todayAt10AM = new Date();
+            todayAt10AM.setHours(10, 0, 0, 0);
+
+            // Pokud je teď po 10:00 a poslední refresh byl před dnešními 10:00
+            if (!lastRefresh || new Date(lastRefresh) < todayAt10AM && now >= todayAt10AM) {
+                // Resetuj zakoupené položky
+                const hadPurchases = localStorage.getItem('purchasedItems');
+                localStorage.setItem('purchasedItems', '[]');
+                localStorage.setItem('lastShopRefresh', now.toISOString());
+
+                // Zobraz notifikaci pokud byly nějaké nákupy
+                if (hadPurchases && JSON.parse(hadPurchases).length > 0) {
+                    setTimeout(() => {
+                        const notification = document.createElement('div');
+                        notification.className = 'earned-points-popup';
+                        notification.innerHTML = `🛍️ Obchod obnoven!<br><span style="font-size: 1.2rem;">Můžeš nakupovat znovu 💕</span>`;
+                        notification.style.background = 'linear-gradient(135deg, #ff6b9d 0%, #d63384 100%)';
+                        notification.style.color = 'white';
+                        document.body.appendChild(notification);
+
+                        setTimeout(() => {
+                            notification.remove();
+                        }, 3000);
+                    }, 1000);
+                }
+            }
+        }
+
+        const shopItems = [
+            { id: 1, name: 'Voda', icon: '💧', price: 60, description: 'Minerálka' },
+            { id: 2, name: 'Čaj', icon: '🍵', price: 80, description: 'Tvůj oblíbený čaj' },
+            { id: 3, name: 'Sladké pití', icon: '🥤', price: 100, description: 'Coca-Cola, Fanta, Sprite...' },
+            { id: 4, name: 'Náhodná sladkost', icon: '🍬', price: 120, description: 'Překvapení!' },
+            { id: 5, name: 'Tyčinky', icon: '🍫', price: 150, description: 'Čokoládové nebo proteínové' },
+            { id: 6, name: 'Masáž hlavy', icon: '💆‍♀️', price: 300, description: 'Relaxační masáž hlavy' },
+            { id: 7, name: 'Masáž noh', icon: '🦶', price: 350, description: 'Masáž unavených nožek' }
+        ];
+
+        function updatePointsDisplay() {
+            document.getElementById('pointsCount').textContent = userPoints;
+            document.getElementById('shopPoints').textContent = userPoints;
+        }
+
+        function savePoints() {
+            localStorage.setItem('quizPoints', userPoints.toString());
+        }
+
+        function addPoints(points) {
+            userPoints += points;
+            savePoints();
+            updatePointsDisplay();
+            // Popup odstraněn - body se zobrazí jen ve výsledcích
+        }
+
+        function updateCountdown() {
+            const now = new Date();
+            const nextRefresh = new Date();
+
+            // Zjisti příští 10:00
+            nextRefresh.setHours(10, 0, 0, 0);
+
+            // Pokud je už po 10:00 dnes, nastav na zítřejších 10:00
+            if (now >= nextRefresh) {
+                nextRefresh.setDate(nextRefresh.getDate() + 1);
+            }
+
+            // Vypočítej rozdíl
+            const diff = nextRefresh - now;
+
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            // Zobraz ve formátu HH:MM:SS
+            const timeString = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+            const timerElement = document.getElementById('countdownTimer');
+            if (timerElement) {
+                timerElement.textContent = timeString;
+            }
+        }
+
+        function openShop() {
+            document.getElementById('shopModal').classList.add('active');
+            renderShopItems();
+            updateCountdown(); // Aktualizuj odpočet při otevření
+        }
+
+        function closeShop() {
+            document.getElementById('shopModal').classList.remove('active');
+        }
+
+        function renderShopItems() {
+            const purchasedItems = JSON.parse(localStorage.getItem('purchasedItems') || '[]');
+            const shopItemsContainer = document.getElementById('shopItems');
+
+            shopItemsContainer.innerHTML = shopItems.map(item => {
+                const isPurchased = purchasedItems.includes(item.id);
+                const canAfford = userPoints >= item.price;
+
+                return `
+                    <div class="shop-item ${isPurchased ? 'purchased' : ''}">
+                        <div class="shop-item-icon">${item.icon}</div>
+                        <div class="shop-item-name">${item.name}</div>
+                        <div class="shop-item-price">${item.price} 💎</div>
+                        <button
+                            class="shop-item-btn"
+                            onclick="purchaseItem(${item.id}, ${item.price})"
+                            ${isPurchased || !canAfford ? 'disabled' : ''}
+                        >
+                            ${isPurchased ? '✅ Koupeno' : (canAfford ? '🛒 Koupit' : '🔒 Nemáš dost bodů')}
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function purchaseItem(itemId, price) {
+            if (userPoints >= price) {
+                userPoints -= price;
+                savePoints();
+                updatePointsDisplay();
+
+                // Ulož koupenou položku
+                const purchasedItems = JSON.parse(localStorage.getItem('purchasedItems') || '[]');
+                purchasedItems.push(itemId);
+                localStorage.setItem('purchasedItems', JSON.stringify(purchasedItems));
+
+                // Refresh shop
+                renderShopItems();
+
+                // Zobraz zprávu
+                const item = shopItems.find(i => i.id === itemId);
+                alert(`🎉 Gratuluju! Koupila sis: ${item.name}\n\nPřinesu ti to co nejdřív! 💕`);
+            }
+        }
+
         // Initialize
+        checkShopRefresh(); // Kontrola denního refreshe obchodu
         updateOkruhInfo();
         updateCategoryTabs();
         updateFlashcard();
+        updatePointsDisplay();
+
+        // Pravidelná kontrola refreshe každých 10 minut (pokud má otevřenou stránku přes 10:00)
+        setInterval(checkShopRefresh, 10 * 60 * 1000);
+
+        // Aktualizuj odpočet každou sekundu
+        setInterval(updateCountdown, 1000);
+        updateCountdown(); // Inicializuj hned
 
     </script>
 </body>
