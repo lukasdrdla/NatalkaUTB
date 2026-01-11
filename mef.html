@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEF Zkouška - Quiz pro Natálku</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #e8f4f8 0%, #d4e8f0 50%, #c5dde8 100%);
+            min-height: 100vh;
+            padding: 20px;
+            overflow-anchor: none;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Navigace zpět */
+        .back-nav {
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: white;
+            color: #2980b9;
+            text-decoration: none;
+            border-radius: 20px;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(41, 128, 185, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(41, 128, 185, 0.3);
+        }
+
+        header {
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        h1 {
+            color: #2980b9;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(41, 128, 185, 0.2);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #5dade2;
+            font-size: 1.1rem;
+            font-weight: 300;
+        }
+
+        .hearts {
+            font-size: 1.5rem;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Mode Selection */
+        .mode-selection {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .mode-btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(41, 128, 185, 0.3);
+        }
+
+        .mode-btn.active {
+            background: linear-gradient(135deg, #5dade2 0%, #2980b9 100%);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .mode-btn:not(.active) {
+            background: white;
+            color: #2980b9;
+            border: 2px solid #85c1e9;
+        }
+
+        .mode-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(41, 128, 185, 0.4);
+        }
+
+        /* Settings */
+        .settings-panel {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(41, 128, 185, 0.1);
+        }
+
+        .settings-row {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .setting-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .setting-item label {
+            color: #2980b9;
+            font-weight: 500;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 26px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 26px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background: linear-gradient(135deg, #5dade2 0%, #2980b9 100%);
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+
+        .shuffle-btn {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #5dade2 0%, #2980b9 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .shuffle-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(41, 128, 185, 0.4);
+        }
+
+        /* Stats */
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+            background: white;
+            padding: 15px 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(41, 128, 185, 0.1);
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2980b9;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #5dade2;
+        }
+
+        /* Progress */
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #d6eaf8;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #5dade2 0%, #2980b9 100%);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            text-align: center;
+            color: #2980b9;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        /* Quiz Container */
+        .quiz-container {
+            background: white;
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(41, 128, 185, 0.2);
+            border: 3px solid #85c1e9;
+            min-height: 480px;
+        }
+
+        .question-number {
+            background: linear-gradient(135deg, #5dade2 0%, #2980b9 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .quiz-question {
+            color: #2c3e50;
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            line-height: 1.6;
+            min-height: 80px;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-height: 220px;
+        }
+
+        .quiz-option {
+            padding: 15px 20px;
+            border: 2px solid #85c1e9;
+            border-radius: 15px;
+            background: #ebf5fb;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            text-align: left;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            min-height: 58px;
+        }
+
+        .option-letter {
+            background: #2980b9;
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .quiz-option:hover {
+            background: #d6eaf8;
+            border-color: #2980b9;
+            transform: translateX(5px);
+        }
+
+        .quiz-option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+
+        .quiz-option.correct .option-letter {
+            background: #28a745;
+        }
+
+        .quiz-option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+        }
+
+        .quiz-option.incorrect .option-letter {
+            background: #dc3545;
+        }
+
+        .quiz-option.disabled {
+            pointer-events: none;
+        }
+
+        /* Answer explanation */
+        .answer-explanation {
+            margin-top: 20px;
+            padding: 15px 20px;
+            background: #e8f6f3;
+            border-radius: 15px;
+            border-left: 4px solid #27ae60;
+            display: none;
+        }
+
+        .answer-explanation.show {
+            display: block;
+        }
+
+        .answer-explanation h4 {
+            color: #27ae60;
+            margin-bottom: 5px;
+        }
+
+        /* Navigation */
+        .navigation {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+            min-height: 50px;
+        }
+
+        .nav-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #5dade2 0%, #2980b9 100%);
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(41, 128, 185, 0.3);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(41, 128, 185, 0.4);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Results */
+        .results-container {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 10px 40px rgba(41, 128, 185, 0.2);
+        }
+
+        .results-container h2 {
+            color: #2980b9;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .score-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #5dade2 0%, #2980b9 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+        }
+
+        .score-percent {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .score-label {
+            font-size: 0.9rem;
+        }
+
+        .result-message {
+            font-size: 1.2rem;
+            color: #5dade2;
+            margin-bottom: 20px;
+        }
+
+        /* Timer */
+        .timer-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .timer {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .timer.warning {
+            animation: pulse-warning 1s ease-in-out infinite;
+        }
+
+        @keyframes pulse-warning {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Grade display */
+        .grade-display {
+            margin: 20px 0;
+        }
+
+        .grade-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-size: 3rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .grade-A { background: linear-gradient(135deg, #27ae60 0%, #1e8449 100%); }
+        .grade-B { background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%); }
+        .grade-C { background: linear-gradient(135deg, #f39c12 0%, #d68910 100%); }
+        .grade-D { background: linear-gradient(135deg, #e67e22 0%, #d35400 100%); }
+        .grade-E { background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); }
+        .grade-F { background: linear-gradient(135deg, #922b21 0%, #641e16 100%); }
+
+        .grade-text {
+            font-size: 1.1rem;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Decorations */
+        .decoration {
+            position: fixed;
+            opacity: 0.1;
+            font-size: 3rem;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .deco-1 { top: 10%; left: 5%; }
+        .deco-2 { top: 30%; right: 5%; }
+        .deco-3 { bottom: 20%; left: 8%; }
+        .deco-4 { bottom: 10%; right: 10%; }
+
+        /* Learning mode */
+        .learning-card {
+            background: white;
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(41, 128, 185, 0.2);
+            border: 3px solid #85c1e9;
+            min-height: 480px;
+        }
+
+        .show-answer-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #27ae60 0%, #1e8449 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .show-answer-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
+        }
+
+        .correct-answer-display {
+            margin-top: 20px;
+            padding: 20px;
+            background: #e8f6f3;
+            border-radius: 15px;
+            border-left: 4px solid #27ae60;
+        }
+
+        .correct-answer-display h4 {
+            color: #27ae60;
+            margin-bottom: 10px;
+        }
+
+        .correct-answer-display p {
+            color: #2c3e50;
+            font-size: 1.1rem;
+        }
+
+        /* Overview Mode - všechny otázky pod sebou */
+        .overview-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .overview-item {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 5px 20px rgba(41, 128, 185, 0.15);
+            border: 2px solid #85c1e9;
+        }
+
+        .overview-question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            gap: 15px;
+        }
+
+        .overview-question-num {
+            background: linear-gradient(135deg, #5dade2 0%, #2980b9 100%);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .overview-question-text {
+            color: #2c3e50;
+            font-size: 1.1rem;
+            line-height: 1.5;
+            flex: 1;
+        }
+
+        .overview-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .overview-option {
+            padding: 12px 15px;
+            border: 2px solid #d6eaf8;
+            border-radius: 12px;
+            background: #f8fbfd;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.95rem;
+        }
+
+        .overview-option.correct-highlight {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+
+        .overview-option .option-letter {
+            background: #aed6f1;
+            color: #2980b9;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .overview-option.correct-highlight .option-letter {
+            background: #28a745;
+            color: white;
+        }
+
+        .overview-stats {
+            text-align: center;
+            padding: 15px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(41, 128, 185, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .overview-stats span {
+            color: #2980b9;
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            h1 { font-size: 1.8rem; }
+            .quiz-question { font-size: 1.1rem; }
+            .mode-btn { padding: 12px 20px; font-size: 0.9rem; }
+            .stat-item { padding: 10px 15px; }
+            .stat-value { font-size: 1.4rem; }
+            .overview-question-text { font-size: 1rem; }
+            .overview-option { font-size: 0.9rem; padding: 10px 12px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="decoration deco-1">📊</div>
+    <div class="decoration deco-2">💹</div>
+    <div class="decoration deco-3">🌍</div>
+    <div class="decoration deco-4">💰</div>
+
+    <div class="container">
+        <nav class="back-nav">
+            <a href="home.html" class="back-btn">⬅️ Zpět na výběr</a>
+        </nav>
+
+        <header>
+            <div class="hearts">📈 💕 🌍</div>
+            <h1>Mezinárodní finance</h1>
+            <p class="subtitle">MEF Zkouška - Quiz pro Natálku</p>
+        </header>
+
+        <div class="mode-selection">
+            <button class="mode-btn active" onclick="setMode('learning')">📚 Učení</button>
+            <button class="mode-btn" onclick="setMode('test')">📝 Test</button>
+            <button class="mode-btn" onclick="setMode('overview')">📋 Přehled</button>
+        </div>
+
+        <div class="settings-panel">
+            <div class="settings-row">
+                <div class="setting-item">
+                    <label>Zamíchat otázky</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="shuffleQuestions" onchange="applySettings()">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <label>Zamíchat odpovědi</label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="shuffleAnswers" onchange="applySettings()">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <button class="shuffle-btn" onclick="resetQuiz()">🔄 Nový test</button>
+            </div>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat-item">
+                <div class="stat-value" id="totalQuestions">0</div>
+                <div class="stat-label">Celkem otázek</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="correctAnswers">0</div>
+                <div class="stat-label">Správně</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value" id="wrongAnswers">0</div>
+                <div class="stat-label">Špatně</div>
+            </div>
+        </div>
+
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <p class="progress-text" id="progressText">Otázka 1 z 100</p>
+
+        <!-- Learning Mode -->
+        <div id="learningMode">
+            <div class="learning-card">
+                <span class="question-number" id="learningQuestionNum">Otázka 1</span>
+                <h3 class="quiz-question" id="learningQuestion">Otázka</h3>
+
+                <div class="quiz-options" id="learningOptions"></div>
+
+                <button class="show-answer-btn" id="showAnswerBtn" onclick="showCorrectAnswer()">
+                    👁️ Zobrazit správnou odpověď
+                </button>
+
+                <div class="correct-answer-display hidden" id="correctAnswerDisplay">
+                    <h4>✅ Správná odpověď:</h4>
+                    <p id="correctAnswerText"></p>
+                </div>
+            </div>
+
+            <div class="navigation">
+                <button class="nav-btn" onclick="prevQuestion()">⬅️ Předchozí</button>
+                <button class="nav-btn" onclick="nextQuestion()">Další ➡️</button>
+            </div>
+        </div>
+
+        <!-- Test Mode -->
+        <div id="testMode" class="hidden">
+            <div class="timer-container">
+                <div class="timer" id="timer">
+                    ⏱️ <span id="timerDisplay">30:00</span>
+                </div>
+            </div>
+
+            <div class="quiz-container" id="quizContainer">
+                <span class="question-number" id="testQuestionNum">Otázka 1</span>
+                <h3 class="quiz-question" id="testQuestion">Otázka</h3>
+                <div class="quiz-options" id="testOptions"></div>
+            </div>
+
+            <div class="navigation" id="testNavigation">
+                <button class="nav-btn" onclick="nextTestQuestion()" id="nextTestBtn" style="display: none;">
+                    Další otázka ➡️
+                </button>
+            </div>
+
+            <div class="results-container hidden" id="resultsContainer">
+                <h2>🎉 Test dokončen! 🎉</h2>
+                <div class="grade-display">
+                    <div class="grade-circle" id="gradeCircle">A</div>
+                    <p class="grade-text" id="gradeText">výborně</p>
+                </div>
+                <div class="score-circle">
+                    <span class="score-percent" id="scorePercent">0%</span>
+                    <span class="score-label">úspěšnost</span>
+                </div>
+                <p class="result-message" id="resultMessage">Skvělá práce!</p>
+                <p id="finalScore">Správně: 0 / 15</p>
+                <button class="nav-btn" onclick="resetQuiz()" style="margin-top: 20px;">🔄 Zkusit znovu</button>
+            </div>
+        </div>
+
+        <!-- Overview Mode - všechny otázky pod sebou -->
+        <div id="overviewMode" class="hidden">
+            <div class="overview-stats">
+                Celkem <span id="overviewTotal">0</span> otázek - správné odpovědi jsou zvýrazněny zeleně ✅
+            </div>
+
+            <div class="overview-container" id="overviewContainer">
+                <!-- Otázky se generují dynamicky -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // MEF Questions Database
+        const allQuestions = [
+            // Základy mezinárodních financí
+            { q: "Co představuje devizové riziko ve specifikách mezinárodních financí?", options: ["Riziko změny úrokových sazeb", "Riziko fluktuací směnných kurzů", "Riziko snížení tržní hodnoty dluhopisů", "Riziko zvýšení cen komodit"], correct: 1 },
+            { q: "Jaké změny nastaly po roce 1988 v akciové struktuře společnosti Nestlé?", options: ["Zavedení akcií na doručitele pro všechny investory", "Odstranění rozdílu mezi akciemi na doručitele a akciemi na jméno", "Přechod z akcií na jméno na akcie na doručitele", "Zvýšení transakčních poplatků pro akcie na jméno"], correct: 1 },
+            { q: "Jaký hlavní cíl sleduje mezinárodní finanční řízení?", options: ["Maximalizace bohatství vlastníků", "Stabilizace směnných kurzů", "Diversifikace portfolia investic", "Minimalizace finančních rizik"], correct: 0 },
+            { q: "Co představuje 'problém zastoupení' v kontextu správy a řízení společností?", options: ["Divergence zájmů mezi managementem a zaměstnanci", "Divergence zájmů mezi akcionáři a věřiteli", "Divergence zájmů mezi managementem a akcionáři", "Konflikt mezi různými skupinami akcionářů"], correct: 2 },
+            { q: "Která událost nebyla zmíněna jako významná ekonomická událost související s globalizací?", options: ["Eurozóna dluhová krize 2010", "Brexit", "Dopady pandemie Covid-19", "Rozpad Sovětského svazu"], correct: 3 },
+            { q: "Jaký je hlavní přínos měnové unie, jako je eurozóna?", options: ["Zvýšení fiskální disciplíny členských států", "Snížení transakčních nákladů a eliminace nejistoty směnného kurzu", "Automatická stabilizace národních ekonomik", "Eliminace potřeby devizových rezerv"], correct: 1 },
+            { q: "Co znamená liberalizace obchodu?", options: ["Zvýšení celních sazeb a kvót", "Zavedení nových obchodních embarg", "Snížení obchodních bariér", "Zavedení přísnějších obchodních regulací"], correct: 2 },
+            { q: "Co je důsledkem teorie komparativních výhod?", options: ["Snížení celosvětové produkce", "Zvýšení blahobytu díky specializaci a obchodu", "Omezení mezinárodního obchodu", "Zvýšení nezaměstnanosti v průmyslově rozvinutých zemích"], correct: 1 },
+            { q: "Jaký byl hlavní účel založení GATT?", options: ["Omezit světový obchod", "Podporovat obchod mezi rozvojovými zeměmi", "Snížit obchodní bariéry", "Vytvořit světovou měnovou jednotku"], correct: 2 },
+            { q: "Jaký je hlavní rozdíl mezi NAFTA a USMCA?", options: ["NAFTA vytvořila ekonomickou unii, zatímco USMCA ne", "USMCA je aktualizace NAFTA s posílenou ekonomickou spoluprací", "NAFTA zahrnovala více zemí než USMCA", "USMCA se zaměřuje pouze na zemědělské produkty"], correct: 1 },
+            { q: "Jaký byl výsledek evropské dluhové krize v roce 2010 pro Řecko?", options: ["Zvýšení HDP", "Růst investic", "Prodej řeckých dluhopisů a snížení ratingu na 'junk'", "Stabilizace řecké ekonomiky"], correct: 2 },
+            { q: "Co bylo základním prvkem Brettonwoodského měnového systému?", options: ["Použití různých měn jako rezervních aktiv", "Americký dolar jako mezinárodní rezervní měna", "Zavedení eura jako světové měny", "Ukotvení všech měn k britské libře"], correct: 1 },
+            { q: "Jaký byl důsledek pružného režimu směnných kurzů po konferenci v Jamajce 1976?", options: ["Zavedení zlata jako jediného mezinárodního rezervního aktiva", "Opětovné zavedení zlatého standardu", "Oficiální opuštění zlata jako mezinárodního rezervního aktiva", "Přijetí eura jako jediného zákonného platidla"], correct: 2 },
+            { q: "Co označuje termín 'bimetalismus' ve finanční historii?", options: ["Použití dvou různých kovů jako zákonného platidla", "Použití jednoho kovu jako zákonného platidla", "Zákaz používání kovů jako platidla", "Období, kdy nebyl žádný kov uznán jako platidlo"], correct: 0 },
+            { q: "Jaký je hlavní cíl fiskální politiky?", options: ["Ovlivňování měnové zásoby", "Řízení vládních výdajů a daní k dosažení makroekonomických cílů", "Stabilizace směnného kurzu", "Regulace kapitálových trhů"], correct: 1 },
+            { q: "Co znamená termín 'stagflace'?", options: ["Vysoká inflace spolu s vysokou nezaměstnaností a stagnujícím růstem", "Nízká inflace spolu s růstem zaměstnanosti", "Rychlý ekonomický růst a nízká inflace", "Dlouhodobá recese s vysokou inflací"], correct: 0 },
+            { q: "Jaký vliv má apreciace měny na exporty země?", options: ["Zvyšuje je, protože produkty jsou levnější v zahraničí", "Sníží je, protože produkty jsou dražší v zahraničí", "Nemá žádný vliv na exporty", "Zvyšuje je, protože je vyrobeno více produktů"], correct: 1 },
+            { q: "Co představuje koncepce 'moral hazard' ve financích?", options: ["Riziko, že subjekty se chovají neeticky po uzavření smlouvy", "Riziko, že subjekty se chovají eticky bez ohledu na okolnosti", "Riziko, že subjekty získají neoprávněný finanční prospěch", "Riziko, že subjekty nebudou schopny splnit své závazky"], correct: 0 },
+            { q: "Jaký je význam pojmu 'deficit obchodní bilance'?", options: ["Celkový objem exportů převyšuje importy", "Celkový objem importů převyšuje exporty", "Rovnováha mezi importy a exporty", "Zisk z mezinárodního obchodu"], correct: 1 },
+            { q: "Co je to 'hluboká integrace' v kontextu mezinárodních obchodních dohod?", options: ["Zaměření pouze na snižování tarifů", "Rozsáhlé regulace zahrnující standardy, práva duševního vlastnictví a ne-tarifní bariéry", "Smlouvy zahrnující pouze země s vysokými příjmy", "Povinnost zemí upravit vnitřní právní normy"], correct: 1 },
+            { q: "Co představuje 'čistý vývoz' v makroekonomii?", options: ["Rozdíl mezi exportem a importem služeb", "Rozdíl mezi exportem a importem zboží a služeb", "Celkový objem exportovaného zboží", "Celkový objem importovaného zboží"], correct: 1 },
+            { q: "Co je fiskální stimul?", options: ["Zvýšení úrokových sazeb centrální bankou", "Snížení daní a zvýšení vládních výdajů k oživení ekonomiky", "Prodej státních dluhopisů", "Zvýšení dovozních cel"], correct: 1 },
+            { q: "Co označuje pojem 'kreativní destrukce' v ekonomii?", options: ["Proces, při kterém nové technologie nahrazují zastaralé", "Zničení ekonomických hodnot během finanční krize", "Strategie firem k eliminaci konkurence", "Politika vlády k zamezení monopolů"], correct: 0 },
+            { q: "Jaký vliv má devalvace měny na export?", options: ["Ztěžuje export, protože produkty jsou dražší", "Zvyšuje export, protože produkty jsou levnější", "Nemá žádný vliv na export", "Omezuje dovoz zahraničních zboží"], correct: 1 },
+            { q: "Jaký je hlavní cíl monetární politiky?", options: ["Regulace daní a vládních výdajů", "Ovlivňování úrokových sazeb a měnové zásoby k dosažení ekonomické stability", "Přímá kontrola zahraničního obchodu", "Omezení monopolních praktik na trhu"], correct: 1 },
+            { q: "Co znamená pojem 'tvrdá měna'?", options: ["Měna s nízkou hodnotou", "Měna, která je široce akceptována jako forma platby mezinárodně", "Měna používaná pouze v jedné zemi", "Měna bez krytí zlatem"], correct: 1 },
+            { q: "Co představuje inflační cílování?", options: ["Proces, při kterém centrální banka nastavuje úrokové sazby bez vazby na inflaci", "Politika centrální banky zaměřená na udržení inflace na předem stanovené úrovni", "Snaha vlády o maximalizaci inflace", "Neúmyslné zvýšení inflace v důsledku fiskální politiky"], correct: 1 },
+            { q: "Co znamená termín 'brutto národní produkt' (BNP)?", options: ["Celková tržní hodnota všech zboží a služeb vyrobených rezidenty země za rok", "Hodnota všech finančních transakcí v zemi za rok", "Celková tržní hodnota všech dovozů a vývozů země", "Rozdíl mezi celkovým vývozem a dovozem země"], correct: 0 },
+            { q: "Jaký je význam pojmu 'spotřebitelská důvěra'?", options: ["Index měřící ochotu podniků investovat", "Míra optimismu/pesimismu spotřebitelů ohledně finanční situace a ekonomiky", "Průzkum zaměřený na měření inflace", "Statistika uvádějící úroveň nezaměstnanosti"], correct: 1 },
+            { q: "Co je kvantitativní uvolňování?", options: ["Proces snižování úrokových sazeb centrální bankou", "Proces prodeje vládních dluhopisů na otevřeném trhu", "Proces nákupu dlouhodobých dluhopisů za účelem snížení úrokových sazeb", "Zvýšení daní jako stimul pro ekonomiku"], correct: 2 },
+            { q: "Jaký vliv má vyšší inflace obecně na úspory?", options: ["Zvyšuje hodnotu úspor", "Sníží reálnou hodnotu úspor", "Nemá žádný vliv na úspory", "Stabilizuje hodnotu úspor"], correct: 1 },
+            { q: "Co je to 'fiskální multiplikátor'?", options: ["Poměr mezi snížením daní a zvýšením výdajů vlády", "Míra, jakou fiskální politika ovlivňuje celkový ekonomický výkon", "Algoritmus pro výpočet státního dluhu", "Index měřící efektivitu vládních výdajů"], correct: 1 },
+            { q: "Co je hlavním cílem strukturální politiky v ekonomii?", options: ["Řešení dočasných ekonomických problémů", "Zlepšení dlouhodobého ekonomického růstu prostřednictvím reformy institucí a trhů", "Ovlivňování krátkodobých ekonomických cyklů", "Stabilizace cen a boj proti inflaci"], correct: 1 },
+            { q: "Co znamená pojem 'likvidita' v ekonomii?", options: ["Schopnost firmy splácet dlouhodobé dluhy", "Schopnost aktiva být rychle proměněno v hotovost bez ztráty hodnoty", "Množství peněz dostupných v ekonomice", "Rychlost obíhání peněz v ekonomice"], correct: 1 },
+            { q: "Jaký je význam pojmu 'efektivní daňová sazba'?", options: ["Nominální sazba daně platná pro většinu poplatníků", "Skutečná míra daně po započítání všech odpočtů a úlev", "Standardní sazba daně pro všechny ekonomické sektory", "Daňová sazba určená pro bohaté občany a velké korporace"], correct: 1 },
+
+            // Devizová expozice
+            { q: "Jaké riziko je spojeno s transakční expozicí?", options: ["Riziko ztráty kapitálu při investici do akcií", "Riziko spojené se změnami úrokových sazeb", "Riziko z kolísání kurzů mezi datem uzavření a vypořádáním smlouvy", "Riziko spojené s politickými změnami v zemi"], correct: 2 },
+            { q: "Co je příkladem ekonomické expozice?", options: ["Změny v tržních cenách surovin", "Kolísání úrokových sazeb ovlivňující úvěrové náklady", "Vliv změn výměnných kurzů na peněžní toky a hodnotu podniku", "Náklady spojené s udržováním fyzického zlata"], correct: 2 },
+            { q: "Jaký nástroj se nejčastěji používá pro zajištění devizové expozice?", options: ["Futures kontrakty", "Komoditní kontrakty", "Forwardové kontrakty", "Akciové opce"], correct: 2 },
+            { q: "Co označuje termín 'swapové kontrakty'?", options: ["Vzájemná výměna dluhopisů mezi dvěma stranami", "Výměna úrokových sazeb, měn, nebo jiných finančních instrumentů", "Prodej a nákup akcií s různými právy", "Odkoupení dluhu z jiné země"], correct: 1 },
+            { q: "Které z následujících není forma provozního zajištění devizové expozice?", options: ["Volba fakturační měny", "Investice do nemovitostí", "Strategie lead/lag", "Zápočet devizové expozice"], correct: 1 },
+            { q: "Co představuje 'opční trh' v kontextu alternativních strategií zajištění?", options: ["Trh, kde se obchodují pouze futures kontrakty", "Trh, kde se obchodují pouze dluhopisy", "Trh, kde se obchodují práva koupit nebo prodat měnu za předem stanovenou cenu", "Trh pro směnu akcií mezi soukromými společnostmi"], correct: 2 },
+            { q: "Jaký je účel křížového zajištění?", options: ["Minimalizovat riziko neplnění kontraktu", "Zajištění expozice v méně likvidních měnách", "Zvýšit likviditu v domácí měně", "Zajištění proti inflaci"], correct: 1 },
+            { q: "Co je podmíněná expozice?", options: ["Garance fixní výše úroků", "Nákup opce na prodej pro projekty s nejistým výsledkem", "Zajištění vypořádání obchodních kontraktů", "Pojištění proti krádeži a poškození majetku"], correct: 1 },
+            { q: "Jaký faktor je zásadní při měření a řízení devizové expozice?", options: ["Výpočet průměrné tržní ceny", "Výpočet koeficientu expozice na základě kovariance a rozptylu", "Záznam účetní hodnoty aktiv", "Výpočet EBITDA"], correct: 1 },
+            { q: "Jaký dopad má zajištění na finanční výkonnost společnosti?", options: ["Zvyšuje celkové riziko společnosti", "Sníží kolísání výsledků spojených s kurzovými změnami", "Zvyšuje dluhovou úroveň společnosti", "Sníží možnosti pro další investice"], correct: 1 },
+            { q: "Co je translační expozice?", options: ["Riziko změn cen akcií kvůli změnám kurzů", "Riziko ztráty z překladu cizoměnových účetních záznamů do domácí měny", "Riziko inflace v zahraničních trzích", "Riziko politických změn ve státě, kde podnik má pobočku"], correct: 1 },
+            { q: "Jak lze zmírnit transakční expozici v mezinárodním obchodě?", options: ["Pouze přes investice do zahraničních nemovitostí", "Přes zajištění s použitím forwardových, opčních a swapových kontraktů", "Pouze s použitím vlastních finančních rezerv", "Přes mezinárodní akviziční aktivity"], correct: 1 },
+            { q: "Která z následujících možností není běžná technika pro zajištění transakční expozice?", options: ["Použití derivátů", "Využití přirozeného zápočtu", "Sjednání fixní úrokové sazby na všechny úvěry", "Použití devizových účtů"], correct: 2 },
+            { q: "Jaký účel mají futures kontrakty v rámci zajištění?", options: ["Ochránit proti úrokovému riziku", "Ochránit proti riziku neschopnosti splácet dluh", "Ochránit proti pohybům cen měn", "Ochránit proti nezaměstnanosti"], correct: 2 },
+            { q: "Co je hlavním cílem finančního zajištění?", options: ["Zvýšit krátkodobé zisky", "Snížit nebo eliminovat riziko spojené s finančními pohyby", "Diverzifikovat investice", "Posílit tržní pozici podniku"], correct: 1 },
+            { q: "Jaký typ expozice je obvykle nejdelší a může trvat několik let?", options: ["Transakční expozice", "Ekonomická expozice", "Translační expozice", "Operační expozice"], correct: 1 },
+            { q: "Co je příkladem přirozeného zajištění proti devizové expozici?", options: ["Nákup opčních kontraktů", "Synchronizace příjmů a výdajů v téže měně", "Využití futures kontraktů", "Investice do zlatých rezerv"], correct: 1 },
+            { q: "Který z následujících není typ swapového kontraktu?", options: ["Úrokový swap", "Měnový swap", "Komoditní swap", "Akciový swap"], correct: 3 },
+            { q: "Jaký je primární cíl použití opčních kontraktů při zajištění?", options: ["Poskytovat likviditu", "Ochránit proti volatilitě cen", "Spekulace na růst hodnoty aktiva", "Zajistit pevné úrokové sazby"], correct: 1 },
+            { q: "Který faktor by měl být zvážen při výběru fakturační měny pro mezinárodní obchodní smlouvy?", options: ["Politická stabilita země emitenta měny", "Historie inflace ve zvolené měně", "Očekávaný pohyb výměnného kurzu", "Všechny uvedené"], correct: 3 },
+            { q: "Jak může podnik využít financování k zajištění proti devizové expozici?", options: ["Získání úvěru v měně, ve které očekává příjmy", "Investice do cenných papírů denominovaných v cizí měně", "Spekulace na pohyby měnových kurzů", "Všechny uvedené"], correct: 0 },
+            { q: "Jaké jsou potenciální důsledky nedostatečného zajištění proti devizové expozici?", options: ["Zvýšení ziskovosti díky kurzovým rozdílům", "Možné finanční ztráty kvůli nevýhodným pohybům výměnných kurzů", "Zvýšené administrativní náklady na zajištění", "Snížené náklady na úroky"], correct: 1 },
+            { q: "Které z následujících není běžným způsobem, jak společnosti zajišťují ekonomickou expozici?", options: ["Diverzifikace trhů a zdrojů příjmů", "Přesun výrobních kapacit do jiných zemí", "Spekulativní obchodování s akciemi", "Vytvoření cenových hladin v závislosti na měně"], correct: 2 },
+            { q: "Jaký dopad má volba fakturační měny na transakční expozici?", options: ["Žádný, transakční expozice je nezávislá na fakturační měně", "Může zvýšit expozici, pokud je zvolena měna volatilní", "Sníží expozici, pokud je zvolena měna stabilní", "Mění pouze právní aspekty kontraktu, ne finanční expozici"], correct: 1 },
+            { q: "Co je cílem použití forwardových kontraktů v rámci devizové expozice?", options: ["Ochrana proti riziku inflace", "Zajištění před nepříznivými pohyby výměnných kurzů", "Spekulace na růst hodnoty měny", "Ochrana proti politickému riziku"], correct: 1 },
+            { q: "Který nástroj je nejefektivnější při zajištění proti krátkodobé devizové expozici?", options: ["Futures kontrakty", "Opční kontrakty", "Swapové kontrakty", "Forwardové kontrakty"], correct: 3 },
+            { q: "Co je cílem využití swapových kontraktů v kontextu devizového zajištění?", options: ["Snížení úrokové expozice", "Obchodování s rizikem úvěrového selhání", "Zajištění proti kolísání měnových kurzů", "Zajištění proti změnám cen komodit"], correct: 2 },
+            { q: "Která metoda se často používá pro zajištění dlouhodobé ekonomické expozice?", options: ["Krátkodobé devizové účty", "Dlouhodobé investice do zahraničních akcií", "Operativní flexibilita a strategické plánování", "Všechny uvedené"], correct: 2 },
+            { q: "Jak může mít translační expozice vliv na prezentaci finančních výsledků společnosti?", options: ["Neovlivňuje finanční výsledky, protože se týká jen účetních postupů", "Může vést k rozdílům ve výkazu zisku a ztráty kvůli kurzovým rozdílům", "Může způsobit umělé zvýšení hodnoty majetku", "Může vést k nesrovnalostem v hodnotě závazků"], correct: 1 },
+            { q: "Jaké jsou nejčastější rizika spojená s nezajištěnou transakční expozicí?", options: ["Výkyvy v měnových kurzech mohou vést k ztrátám nebo ziskům", "Neovlivňuje finanční výkazy", "Zvyšuje náklady na úroky", "Všechny uvedené"], correct: 0 },
+
+            // Korporátní řízení
+            { q: "Co je hlavním cílem Cadburyho kodexu ve Spojeném království?", options: ["Zvýšit hodnotu akcií společnosti", "Podporovat zahraniční investice", "Zlepšit správu a řízení společností", "Snížit daně pro korporace"], correct: 2 },
+            { q: "Co je primárním cílem použití swapových kontraktů v korporátním financování?", options: ["Spekulovat na změny úrokových sazeb", "Zajištění proti kolísání úrokových sazeb a výměnných kurzů", "Diverzifikace investičního portfolia", "Zvýšení finanční páky podniku"], correct: 1 },
+            { q: "Jaký je význam pojmů 'long' a 'short' v kontextu futures kontraktů?", options: ["Long znamená koupit, short znamená prodat", "Long znamená spekulovat na růst ceny, short na pokles ceny", "Long znamená držet kontrakt do exspirace, short znamená uzavřít před exspirací", "Long znamená držení aktivní pozice, short pasivní pozice"], correct: 0 },
+            { q: "Jaký dopad má zajištění na cash flow společnosti?", options: ["Zvýší cash flow díky eliminaci rizika", "Stabilizuje cash flow snížením finanční volatility", "Sníží celkové cash flow kvůli nákladům na zajištění", "Neovlivní cash flow, ale zvýší dluhovou úroveň"], correct: 1 },
+            { q: "Co znamená 'hedging' v kontextu mezinárodního obchodu?", options: ["Diverzifikace trhů a investic", "Zajištění proti finančním rizikům", "Vytváření konkurenčních cenových strategií", "Spekulace na změny výměnných kurzů"], correct: 1 },
+            { q: "Jaké jsou hlavní typy devizové expozice, které mohou ovlivnit podniky?", options: ["Transakční, ekonomická a operační", "Transakční, translační a speculativní", "Ekonomická, speculativní a operační", "Transakční, ekonomická a translační"], correct: 3 },
+            { q: "Který typ finančního nástroje se nejčastěji používá pro zajištění proti riziku změny úrokových sazeb?", options: ["Úrokové swapy", "Měnové swapy", "Akciové opce", "Komoditní futures"], correct: 0 },
+            { q: "Jaký dopad má správné zajištění proti devizové expozici na účetní výkazy společnosti?", options: ["Zvyšuje ziskovost kvůli vyššímu kurzovému zisku", "Sníží kolísání výsledků spojených s kurzovými změnami", "Zvyšuje dluhovou úroveň kvůli nákladům na zajištění", "Neovlivní účetní výkazy, ale zlepší tržní hodnotu"], correct: 1 },
+            { q: "Proč jsou zahraniční společnosti kótované na amerických burzách obvykle vyšší oceněny?", options: ["Kvůli vyššímu riziku investice", "Díky lepšímu výkonu na trhu", "Kvůli přísnějším regulacím", "Protože mají lepší reputaci"], correct: 2 },
+            { q: "Jaký problém popisuje termín 'problém zastoupení' v kontextu veřejných obchodních společností?", options: ["Konflikt mezi zákazníky a poskytovateli služeb", "Konflikt mezi akcionáři a manažery", "Konflikt mezi veřejnými a soukromými zájmy", "Konflikt mezi různými typy akcionářů"], correct: 1 },
+            { q: "Jaký dopad má 'klín' mezi právem na kontrolu a právem na peněžní toky na správu společnosti?", options: ["Zvyšuje transparentnost", "Snížení efektivity řízení", "Zlepšuje motivaci manažerů", "Podporuje inovace"], correct: 1 },
+            { q: "Jaké jsou hlavní cíle reformy správy a řízení společností po finančních skandálech?", options: ["Zvýšit zisky společnosti", "Snížit regulaci", "Obnovit důvěru veřejnosti a investorů", "Rozšířit tržní podíl"], correct: 2 },
+            { q: "Proč anglická tradice 'common law' poskytuje silnější ochranu práv akcionářů?", options: ["Kvůli nižším daním", "Díky důrazu na soudní rozhodnutí", "Protože podporuje vládní zásahy", "Kvůli vyšší míře korupce"], correct: 1 },
+            { q: "Co přesně znamenají zkratky CSR a ESG?", options: ["Corporate Social Responsibility a Economic Social Governance", "Corporate Sustainability Reporting a Environmental Social Governance", "Corporate Social Responsibility a Environmental Social Governance", "Corporate Social Reporting a Economic Social Governance"], correct: 2 },
+            { q: "Jaký je přínos vyššího počtu nezávislých ředitelů v dozorčí radě společnosti?", options: ["Snížení nákladů na dohled", "Zlepšení řízení rizik", "Snížení účinnosti rozhodování", "Zvýšení výkonnosti operací"], correct: 1 },
+            { q: "Co znamená pojem 'free rider problem' v kontextu korporátního správy?", options: ["Problém s volnými zdroji společnosti", "Problém s neangažovanými akcionáři", "Situace, kdy jednotlivci těží z kolektivního úsilí bez příspěvku", "Konflikt mezi různými druhy dopravy"], correct: 2 },
+            { q: "Jaký účinek má implementace akcionářských aktivismů na společnosti?", options: ["Zvyšuje jejich tržní hodnotu", "Snížení důvěry investorů", "Omezuje inovační potenciál", "Zvyšuje interní konflikty"], correct: 0 },
+            { q: "Jakým způsobem mohou minority shareholders ovlivnit rozhodování ve společnosti?", options: ["Hlasováním na valných hromadách", "Přímým jmenováním výkonných ředitelů", "Převzetím kontrolního podílu", "Vyvíjením mediálního tlaku"], correct: 0 },
+            { q: "Proč jsou kodexy správy a řízení společnosti vytvářeny?", options: ["Pro zvýšení státní kontroly nad korporacemi", "Aby manažeři měli jasnější pravidla", "Aby byly zabezpečeny zájmy všech zúčastněných stran", "Pro zvýšení flexibility v rozhodování"], correct: 2 },
+            { q: "Jakým způsobem se civil law liší od common law v otázce korporátního řízení?", options: ["Má menší důraz na práva akcionářů", "Přísnější regulace firemního chování", "Větší důraz na soudní precedent", "Flexibilnější interpretace zákonů"], correct: 0 },
+            { q: "Jaké jsou hlavní rozdíly mezi interními a externími kontrolními mechanismy ve společnostech?", options: ["Interní kontrola zahrnuje audit, zatímco externí kontrola zahrnuje vládní regulace", "Interní kontrola se týká vedení společnosti, externí kontrola tržních sil", "Interní kontrola zahrnuje management, externí kontrola zákazníky", "Interní kontrola je o samoregulaci, externí kontrola o dodržování právních norem"], correct: 1 },
+            { q: "Co znamená v korporátním kontextu pojem 'whistleblowing'?", options: ["Odměňování produktivních zaměstnanců", "Nahlášení neetického chování v rámci organizace", "Zavedení nových produktů na trh", "Přeorganizování interních procesů"], correct: 1 },
+            { q: "Jaký dopad může mít nadměrné vyplácení dividend na společnost?", options: ["Zvyšuje dlouhodobou udržitelnost", "Může omezit dostupné kapitálové zdroje", "Sníží potřebu externího financování", "Vede k technologické inovaci"], correct: 1 },
+            { q: "Co obvykle motivuje soudní spory mezi akcionáři a managementem?", options: ["Odlišnosti v korporátní kultuře", "Neúspěch v dosahování obchodních cílů", "Podezření z porušení fiduciárních povinností", "Rozdíly v interpretaci finančních výsledků"], correct: 2 },
+            { q: "Jaký je vztah mezi korporátním řízením a korporátní transparentností?", options: ["Žádný vztah", "Inverzní vztah", "Přímý vztah, kde lepší řízení znamená větší transparentnost", "Komplexní vztah, kde závisí na průmyslu"], correct: 2 },
+            { q: "Jaké jsou běžné následky, pokud společnost porušuje principy korporátního řízení?", options: ["Pokuty od regulačních orgánů", "Zvýšení cen akcií", "Zlepšení vnitřní komunikace", "Snížení výrobních nákladů"], correct: 0 },
+            { q: "Jakým způsobem může být efektivně vylepšeno korporátní řízení ve společnosti?", options: ["Snížením počtu zaměstnanců", "Zavedením přísnějších interních kontrol", "Zvýšením dividendového výnosu", "Omezením externích auditů"], correct: 1 },
+            { q: "Který z následujících je příkladem externího kontrolního mechanismu?", options: ["Zaměstnanecká hodnotící zpráva", "Finanční audit prováděný externí firmou", "Vnitřní pravidla společnosti", "Schůze výkonného výboru"], correct: 1 },
+            { q: "Jaký význam má v korporátním řízení role 'Compliance Officer'?", options: ["Zajišťuje, že společnost dodržuje vnitřní pravidla", "Monitoruje efektivitu marketingových strategií", "Rozhoduje o výši dividend", "Řídí procesy náboru zaměstnanců"], correct: 0 },
+            { q: "Co znamená pojem 'Corporate Governance'?", options: ["Systém podnikání bez regulací", "Metody, jakými jsou korporace řízeny a kontrolovány", "Proces vytváření nových společností", "Marketingová strategie firmy"], correct: 1 },
+            { q: "Jaký je účel 'audit committee' ve společnosti?", options: ["Rozvíjet nové obchodní strategie", "Zajišťovat a přezkoumávat finanční zprávy a audity", "Řídit denní operace společnosti", "Monitorovat konkurenci"], correct: 1 },
+            { q: "Jaké je primární zaměření 'stakeholder theory'?", options: ["Maximalizace zisku pro akcionáře", "Zajištění, že všechny zainteresované strany jsou zapojeny do rozhodování", "Důraz na short-term výsledky", "Fokus na vývoj produktu"], correct: 1 },
+            { q: "Jaký dopad má správné korporátní řízení na vztahy s investory?", options: ["Snížení jejich zájmu o společnost", "Zvýšení důvěry a atraktivity pro investice", "Není žádný zjevný vliv", "Výrazně zvyšuje náklady na kapitál"], correct: 1 },
+            { q: "Co obnáší 'risk management' v kontextu korporátního řízení?", options: ["Ignorování potenciálních rizik pro maximalizaci zisku", "Identifikace, hodnocení a přijímání opatření na minimalizaci rizik", "Fokus pouze na finanční rizika", "Přenesení všech rizik na třetí strany"], correct: 1 },
+            { q: "Jaké jsou obvyklé výhody zavedení 'corporate social responsibility' (CSR) programů?", options: ["Zvýšení interních nákladů", "Zlepšení veřejného vnímání a značky", "Snížení zájmu o produkty společnosti", "Omezení globálního dosahu firmy"], correct: 1 },
+            { q: "Jakou roli hraje 'board of directors' v korporátním řízení?", options: ["Poskytuje technickou podporu společnosti", "Řídí denní operace firmy", "Nastavuje strategický směr a dohlíží na management", "Zabývá se pouze finančními operacemi"], correct: 2 },
+            { q: "Co představuje termín 'proxy vote'?", options: ["Hlasování o změnách ve struktuře společnosti", "Hlasování zástupcem na valné hromadě akcionářů", "Volba nových členů vedení společnosti", "Interní anketa mezi zaměstnanci"], correct: 1 },
+            { q: "Jaký je hlavní účel korporativní transparentnosti?", options: ["Ochránit firmy před vnějšími auditory", "Zajistit otevřenost a dostupnost informací pro zainteresované strany", "Omezit sdílení informací o interních procesech", "Zvýšit složitost finančních reportů"], correct: 1 },
+            { q: "Jaký je význam pojmu 'fiduciary duty'?", options: ["Povinnost společnosti platit dividendy akcionářům", "Zákonná povinnost jednat v nejlepším zájmu jiné strany", "Povinnost zachovat všechny obchodní tajemství", "Právo zaměstnanců na účast na zisku firmy"], correct: 1 },
+            { q: "Co je účelem vytváření 'sustainable governance practices'?", options: ["Zajištění okamžitého zisku pro akcionáře", "Podpora dlouhodobého udržitelného růstu a odpovědnosti", "Snížení nákladů na marketing", "Zvýšení spotřeby zdrojů"], correct: 1 },
+            { q: "Jaký dopad má efektivní korporátní řízení na akcionářskou hodnotu?", options: ["Zvyšuje stabilitu a přitažlivost pro investory", "Vede k okamžitému poklesu akcií", "Nemá žádný vliv na hodnotu akcií", "Způsobuje nestabilitu na trhu"], correct: 0 },
+            { q: "Jaký je hlavní účel 'corporate ethics programs'?", options: ["Zvýšení prodeje a tržeb", "Podpora etického chování a rozhodování v rámci společnosti", "Výběr nových zaměstnanců", "Monitorování soukromých aktivit zaměstnanců"], correct: 1 },
+
+            // Zahraniční investice
+            { q: "Jaký mohl být motiv pro firmy z rozvinutých a rozvojových zemí k odkoupení amerických technologicky pokročilých firem?", options: ["Získání technologických inovací", "Zlepšení reputace na domácím trhu", "Snížení výrobních nákladů", "Zvýšení domácí konkurence"], correct: 0 },
+            { q: "Jaký faktor nejvíce pohání japonské investice v jihovýchodní Asii?", options: ["Kulturní podobnosti", "Přístup k levné práci", "Existence volných obchodních zón", "Politická stabilita"], correct: 1 },
+            { q: "Proč asijské firmy, zejména z Japonska a Jižní Koreje, stavějí výrobní závody v Mexiku po podepsání NAFTA?", options: ["Snížení logistických nákladů", "Snadnější přístup k americkému trhu", "Přístup k mexickým přírodním zdrojům", "Nízké náklady na energie"], correct: 1 },
+            { q: "Proč se Čína stala hlavním příjemcem přímých zahraničních investic v posledních letech?", options: ["Vyšší míra politické stability", "Agresivní daňové pobídky", "Velký a rychle rostoucí trh", "Snížení regulačních bariér"], correct: 2 },
+            { q: "Proč hostitelské země často stojí proti přeshraničním akvizicím?", options: ["Obava z odlevu kapitálu", "Ztráta kontrolního podílu v národních společnostech", "Nedostatek zahraničních investic", "Obava z monopolizace trhu"], correct: 1 },
+            { q: "Jaké mohou být důvody negativních synergických zisků z akvizic domácích firem zahraničními společnostmi?", options: ["Kulturní a organizační neshody", "Vyšší efektivita operací", "Snížené provozní náklady", "Zvýšené tržní podíly"], correct: 0 },
+            { q: "Jaký hlavní motiv mohly mít japonské nadnárodní korporace, jako je Toyota a Toshiba, pro rozsáhlé investice v zemích jihovýchodní Asie?", options: ["Dostupnost levné pracovní síly", "Přístup k novým technologiím", "Snížení logistických nákladů", "Omezení vlivu místních vlád"], correct: 0 },
+            { q: "Jaký je klíčový rozdíl mezi rizikem země a politickým rizikem?", options: ["Riziko země je širší a zahrnuje politické riziko", "Politické riziko zahrnuje pouze ekonomická rizika", "Riziko země se týká pouze přírodních katastrof", "Politické riziko je vždy nižší než riziko země"], correct: 0 },
+            { q: "Jaký druh rizika je spojen s možností, že hostitelská země změní obchodní zákony, což negativně ovlivní operace zahraničních firem?", options: ["Ekonomické riziko", "Právní riziko", "Politické riziko", "Riziko trhu"], correct: 2 },
+            { q: "Která oblast zaznamenala výrazný růst přímých zahraničních investic po roce 1990?", options: ["Jižní Amerika", "Jihovýchodní Asie", "Východní Evropa", "Střední Afrika"], correct: 2 },
+            { q: "Co obvykle zahrnuje politické riziko?", options: ["Pouze vojenské převraty", "Výhradně zákony omezující obchod", "Různé faktory včetně nestability vlády a zákony omezující obchod", "Přírodní katastrofy"], correct: 2 },
+            { q: "Jaký je hlavní důvod, proč firmy provádějí zahraniční akvizice?", options: ["Snížit své celkové náklady", "Rychle získat podíl na trhu", "Zlepšit domácí tržní podíl", "Odstranit konkurenci"], correct: 1 },
+            { q: "Jaký efekt může mít stabilní politické prostředí na přímé zahraniční investice?", options: ["Zvýšení nákladů na podnikání", "Snížení přitažlivosti pro investory", "Přilákání více zahraničních investorů", "Zvýšení domácí konkurence"], correct: 2 },
+            { q: "Proč mohou firmy považovat jihovýchodní Asii za atraktivní cíl pro investice?", options: ["Vysoké úrokové sazby", "Velké množství přírodních zdrojů", "Rozsáhlé trhy a růstový potenciál", "Politická stabilita"], correct: 2 },
+            { q: "Jaký je primární cíl zahraničních akvizic pro nadnárodní korporace?", options: ["Zlepšit technologické dovednosti", "Snížit vliv místních vlád", "Získat přístup ke konkurenčním trhům", "Kontrolovat zdroje surovin"], correct: 2 },
+            { q: "Jaké jsou výhody přímých zahraničních investic pro hostitelskou zemi?", options: ["Pouze zvýšení zaměstnanosti", "Pouze technologický transfer", "Technologický transfer, zvýšení zaměstnanosti a zlepšení infrastruktury", "Snížení ceny akcií"], correct: 2 },
+            { q: "Jaké faktory by mohly způsobit pokles přímých zahraničních investic do určité země?", options: ["Stabilita měny a vysoké úrokové sazby", "Růst ekonomiky a lepší infrastruktura", "Politická nestabilita a ekonomické recese", "Snížení ceny akcií a růst trhu"], correct: 2 },
+            { q: "Jaký je důsledek rizika země pro investory?", options: ["Nižší návratnost investic", "Vyšší návratnost investic", "Zvýšení konkurenční schopnosti", "Snížení operačních nákladů"], correct: 0 },
+            { q: "Co obvykle motivuje nadnárodní korporace k přesunutí výroby do zemí s nízkými náklady?", options: ["Zvýšení kvality produktů", "Snížení výrobních nákladů", "Získání politického vlivu", "Zlepšení pracovních podmínek"], correct: 1 },
+            { q: "Jaký je primární účel Mezinárodního měnového fondu (MMF) ve vztahu k investicím?", options: ["Poskytování půjček zemím s politickými problémy", "Podpora měnové stability a poskytování finančních prostředků", "Snížení konkurence mezi zeměmi", "Poskytování technologické pomoci"], correct: 1 },
+            { q: "Proč může být pro nadnárodní korporace výhodné mít výrobní zařízení v různých zemích?", options: ["Snižuje potřebu exportu", "Snížení celkových nákladů na logistiku", "Zvýšení ceny svých akcií", "Eliminace potřeby dovozu"], correct: 1 },
+            { q: "Co znamená termín 'riziko země'?", options: ["Riziko ztráty kapitálu z důvodu ekonomických nebo politických podmínek", "Riziko, že země nezaplatí své dluhy", "Pouze riziko ztráty z důvodu přírodních katastrof", "Pouze politické riziko"], correct: 0 },
+            { q: "Jak může domácí firma reagovat na příchod zahraniční konkurence na trh?", options: ["Snížení cen svých produktů", "Investice do marketingových kampaní", "Zlepšení kvality svých produktů", "Všechny výše uvedené"], correct: 3 },
+        ];
+
+        let questions = [...allQuestions];
+        let currentIndex = 0;
+        let currentMode = 'learning';
+        let correctCount = 0;
+        let wrongCount = 0;
+        let answered = false;
+        let shuffleQuestionsEnabled = false;
+        let shuffleAnswersEnabled = false;
+        let prevShuffleQuestions = false;
+
+        // Test mode timer
+        let timerInterval = null;
+        let timeRemaining = 30 * 60; // 30 minut v sekundách
+        const TEST_QUESTION_COUNT = 15;
+
+        // Initialize
+        function init() {
+            document.getElementById('totalQuestions').textContent = questions.length;
+            updateQuestion();
+        }
+
+        // Timer functions
+        function startTimer() {
+            stopTimer();
+            timeRemaining = 30 * 60; // Reset to 30 minutes
+            updateTimerDisplay();
+            document.getElementById('timer').classList.remove('warning');
+
+            timerInterval = setInterval(() => {
+                timeRemaining--;
+                updateTimerDisplay();
+
+                // Warning when 5 minutes left
+                if (timeRemaining <= 5 * 60) {
+                    document.getElementById('timer').classList.add('warning');
+                }
+
+                // Time's up
+                if (timeRemaining <= 0) {
+                    stopTimer();
+                    showResults();
+                }
+            }, 1000);
+        }
+
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            document.getElementById('timerDisplay').textContent =
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function setMode(mode) {
+            currentMode = mode;
+            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Stop timer when leaving test mode
+            stopTimer();
+
+            // Skryj všechny režimy
+            document.getElementById('learningMode').classList.add('hidden');
+            document.getElementById('testMode').classList.add('hidden');
+            document.getElementById('overviewMode').classList.add('hidden');
+
+            // Skryj/zobraz prvky podle režimu
+            const settingsPanel = document.querySelector('.settings-panel');
+            const statsBar = document.querySelector('.stats-bar');
+            const progressBar = document.querySelector('.progress-bar');
+            const progressText = document.querySelector('.progress-text');
+
+            if (mode === 'learning') {
+                document.getElementById('learningMode').classList.remove('hidden');
+                settingsPanel.classList.remove('hidden');
+                statsBar.classList.remove('hidden');
+                progressBar.classList.remove('hidden');
+                progressText.classList.remove('hidden');
+                resetQuiz();
+            } else if (mode === 'test') {
+                document.getElementById('testMode').classList.remove('hidden');
+                settingsPanel.classList.remove('hidden');
+                statsBar.classList.remove('hidden');
+                progressBar.classList.remove('hidden');
+                progressText.classList.remove('hidden');
+                resetQuiz();
+            } else if (mode === 'overview') {
+                document.getElementById('overviewMode').classList.remove('hidden');
+                settingsPanel.classList.remove('hidden');
+                statsBar.classList.add('hidden');
+                progressBar.classList.add('hidden');
+                progressText.classList.add('hidden');
+                renderOverview();
+            }
+        }
+
+        function applySettings() {
+            const newShuffleQuestions = document.getElementById('shuffleQuestions').checked;
+            shuffleAnswersEnabled = document.getElementById('shuffleAnswers').checked;
+
+            // Zjisti jestli se změnilo zamíchání otázek
+            const questionsChanged = newShuffleQuestions !== prevShuffleQuestions;
+            shuffleQuestionsEnabled = newShuffleQuestions;
+            prevShuffleQuestions = newShuffleQuestions;
+
+            // Aplikuj změny okamžitě
+            if (currentMode === 'overview') {
+                renderOverview();
+            } else if (currentMode === 'learning') {
+                if (questionsChanged) {
+                    // Zamíchej otázky a resetuj
+                    questions = [...allQuestions];
+                    if (shuffleQuestionsEnabled) {
+                        questions = questions.sort(() => Math.random() - 0.5);
+                    }
+                    currentIndex = 0;
+                    correctCount = 0;
+                    wrongCount = 0;
+                    document.getElementById('correctAnswers').textContent = correctCount;
+                    document.getElementById('wrongAnswers').textContent = wrongCount;
+                }
+                // Vždy překresli aktuální otázku (pro zamíchané odpovědi)
+                learningAnswered = false;
+                updateQuestion();
+            } else if (currentMode === 'test') {
+                // V test módu překresli otázku jen pokud ještě nebyla zodpovězena
+                if (!answered) {
+                    updateQuestion();
+                }
+            }
+        }
+
+        function resetQuiz() {
+            // Stop any existing timer
+            stopTimer();
+
+            if (currentMode === 'test') {
+                // Test mode: 15 random questions
+                questions = [...allQuestions].sort(() => Math.random() - 0.5).slice(0, TEST_QUESTION_COUNT);
+                // Start timer
+                startTimer();
+            } else {
+                // Learning mode: all questions
+                questions = [...allQuestions];
+                if (shuffleQuestionsEnabled) {
+                    questions = questions.sort(() => Math.random() - 0.5);
+                }
+            }
+
+            currentIndex = 0;
+            correctCount = 0;
+            wrongCount = 0;
+            answered = false;
+
+            document.getElementById('totalQuestions').textContent = questions.length;
+            document.getElementById('correctAnswers').textContent = correctCount;
+            document.getElementById('wrongAnswers').textContent = wrongCount;
+            document.getElementById('resultsContainer').classList.add('hidden');
+            document.getElementById('quizContainer').classList.remove('hidden');
+            document.getElementById('testNavigation').classList.remove('hidden');
+            document.getElementById('nextTestBtn').style.display = 'none';
+
+            updateQuestion();
+        }
+
+        function updateQuestion() {
+            if (currentIndex >= questions.length) {
+                showResults();
+                return;
+            }
+
+            const q = questions[currentIndex];
+            const progress = ((currentIndex + 1) / questions.length) * 100;
+
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('progressText').textContent = `Otázka ${currentIndex + 1} z ${questions.length}`;
+
+            if (currentMode === 'learning') {
+                updateLearningMode(q);
+            } else {
+                updateTestMode(q);
+            }
+        }
+
+        let learningAnswered = false;
+
+        function updateLearningMode(q) {
+            document.getElementById('learningQuestionNum').textContent = `Otázka ${currentIndex + 1}`;
+            document.getElementById('learningQuestion').textContent = q.q;
+            document.getElementById('correctAnswerDisplay').classList.add('hidden');
+            document.getElementById('showAnswerBtn').style.display = 'block';
+            learningAnswered = false;
+
+            let options = q.options.map((opt, i) => ({ text: opt, originalIndex: i }));
+            if (shuffleAnswersEnabled) {
+                options = options.sort(() => Math.random() - 0.5);
+            }
+
+            const letters = ['A', 'B', 'C', 'D'];
+            const optionsHtml = options.map((opt, i) => `
+                <div class="quiz-option" onclick="selectLearningAnswer(${opt.originalIndex}, ${q.correct}, this)">
+                    <span class="option-letter">${letters[i]}</span>
+                    <span>${opt.text}</span>
+                </div>
+            `).join('');
+
+            document.getElementById('learningOptions').innerHTML = optionsHtml;
+
+            // Store correct answer for display
+            const correctAnswer = q.options[q.correct];
+            document.getElementById('correctAnswerText').textContent = correctAnswer;
+        }
+
+        function selectLearningAnswer(selected, correct, element) {
+            if (learningAnswered) return;
+            learningAnswered = true;
+
+            const options = document.querySelectorAll('#learningOptions .quiz-option');
+            options.forEach(opt => {
+                opt.classList.add('disabled');
+                const onclickAttr = opt.getAttribute('onclick');
+                const originalIndex = parseInt(onclickAttr.match(/\d+/)[0]);
+                if (originalIndex === correct) {
+                    opt.classList.add('correct');
+                } else if (opt === element && selected !== correct) {
+                    opt.classList.add('incorrect');
+                }
+            });
+
+            // Zobraz správnou odpověď
+            document.getElementById('correctAnswerDisplay').classList.remove('hidden');
+            document.getElementById('showAnswerBtn').style.display = 'none';
+
+            // Aktualizuj počítadlo
+            if (selected === correct) {
+                correctCount++;
+            } else {
+                wrongCount++;
+            }
+            document.getElementById('correctAnswers').textContent = correctCount;
+            document.getElementById('wrongAnswers').textContent = wrongCount;
+        }
+
+        function updateTestMode(q) {
+            answered = false;
+            document.getElementById('testQuestionNum').textContent = `Otázka ${currentIndex + 1}`;
+            document.getElementById('testQuestion').textContent = q.q;
+            document.getElementById('nextTestBtn').style.display = 'none';
+
+            let options = q.options.map((opt, i) => ({ text: opt, originalIndex: i }));
+            if (shuffleAnswersEnabled) {
+                options = options.sort(() => Math.random() - 0.5);
+            }
+
+            const letters = ['A', 'B', 'C', 'D'];
+            const optionsHtml = options.map((opt, i) => `
+                <div class="quiz-option" onclick="selectTestAnswer(${opt.originalIndex}, ${q.correct})">
+                    <span class="option-letter">${letters[i]}</span>
+                    <span>${opt.text}</span>
+                </div>
+            `).join('');
+
+            document.getElementById('testOptions').innerHTML = optionsHtml;
+        }
+
+        function showCorrectAnswer() {
+            document.getElementById('correctAnswerDisplay').classList.remove('hidden');
+            document.getElementById('showAnswerBtn').style.display = 'none';
+        }
+
+        function selectTestAnswer(selected, correct) {
+            if (answered) return;
+            answered = true;
+
+            const options = document.querySelectorAll('#testOptions .quiz-option');
+            options.forEach((opt, i) => {
+                opt.classList.add('disabled');
+                const originalIndex = parseInt(opt.getAttribute('onclick').match(/\d+/)[0]);
+                if (originalIndex === correct) {
+                    opt.classList.add('correct');
+                } else if (originalIndex === selected && selected !== correct) {
+                    opt.classList.add('incorrect');
+                }
+            });
+
+            if (selected === correct) {
+                correctCount++;
+            } else {
+                wrongCount++;
+            }
+
+            document.getElementById('correctAnswers').textContent = correctCount;
+            document.getElementById('wrongAnswers').textContent = wrongCount;
+            document.getElementById('nextTestBtn').style.display = 'inline-block';
+        }
+
+        function nextQuestion() {
+            currentIndex++;
+            if (currentIndex >= questions.length) {
+                currentIndex = 0;
+            }
+            updateQuestion();
+        }
+
+        function prevQuestion() {
+            currentIndex--;
+            if (currentIndex < 0) {
+                currentIndex = questions.length - 1;
+            }
+            updateQuestion();
+        }
+
+        function nextTestQuestion() {
+            currentIndex++;
+            updateQuestion();
+        }
+
+        function showResults() {
+            // Stop timer
+            stopTimer();
+
+            document.getElementById('quizContainer').classList.add('hidden');
+            document.getElementById('testNavigation').classList.add('hidden');
+            document.getElementById('resultsContainer').classList.remove('hidden');
+
+            const percent = Math.round((correctCount / questions.length) * 100);
+            document.getElementById('scorePercent').textContent = percent + '%';
+            document.getElementById('finalScore').textContent = `Správně: ${correctCount} / ${questions.length}`;
+
+            // Calculate grade (only in test mode)
+            const gradeCircle = document.getElementById('gradeCircle');
+            const gradeText = document.getElementById('gradeText');
+            const gradeDisplay = document.querySelector('.grade-display');
+
+            if (currentMode === 'test') {
+                gradeDisplay.style.display = 'block';
+                let grade, gradeLabel, gradeClass;
+
+                if (percent >= 93) {
+                    grade = 'A'; gradeLabel = 'výborně'; gradeClass = 'grade-A';
+                } else if (percent >= 85) {
+                    grade = 'B'; gradeLabel = 'velmi dobře'; gradeClass = 'grade-B';
+                } else if (percent >= 77) {
+                    grade = 'C'; gradeLabel = 'dobře'; gradeClass = 'grade-C';
+                } else if (percent >= 69) {
+                    grade = 'D'; gradeLabel = 'uspokojivě'; gradeClass = 'grade-D';
+                } else if (percent >= 60) {
+                    grade = 'E'; gradeLabel = 'dostatečně'; gradeClass = 'grade-E';
+                } else {
+                    grade = 'F'; gradeLabel = 'nedostatečně'; gradeClass = 'grade-F';
+                }
+
+                gradeCircle.textContent = grade;
+                gradeCircle.className = 'grade-circle ' + gradeClass;
+                gradeText.textContent = gradeLabel;
+
+                // Message based on grade
+                let message = '';
+                if (grade === 'A') message = '🌟 Úžasné! Jsi hvězda! 🌟';
+                else if (grade === 'B') message = '💕 Výborná práce! 💕';
+                else if (grade === 'C') message = '✨ Dobrý výkon! ✨';
+                else if (grade === 'D') message = '👍 Splněno, ale zkus to zlepšit! 👍';
+                else if (grade === 'E') message = '⚠️ Těsně, ale prošla jsi! ⚠️';
+                else message = '💪 Bohužel nesplněno, zkus to znovu! 💪';
+
+                document.getElementById('resultMessage').textContent = message;
+            } else {
+                gradeDisplay.style.display = 'none';
+
+                let message = '';
+                if (percent >= 90) message = '🌟 Úžasné! Jsi hvězda! 🌟';
+                else if (percent >= 70) message = '💕 Skvělá práce! 💕';
+                else if (percent >= 50) message = '✨ Dobrý základ, pokračuj! ✨';
+                else message = '💪 Nevzdávej to, zkus to znovu! 💪';
+
+                document.getElementById('resultMessage').textContent = message;
+            }
+        }
+
+        // Overview mode functions
+        function renderOverview() {
+            const container = document.getElementById('overviewContainer');
+            const letters = ['A', 'B', 'C', 'D'];
+
+            // Aplikuj zamíchání otázek
+            let questionsToRender = [...allQuestions];
+            if (shuffleQuestionsEnabled) {
+                questionsToRender = questionsToRender.sort(() => Math.random() - 0.5);
+            }
+
+            document.getElementById('overviewTotal').textContent = questionsToRender.length;
+
+            let html = '';
+            questionsToRender.forEach((q, index) => {
+                // Připrav možnosti (případně zamíchané)
+                let options = q.options.map((opt, i) => ({ text: opt, originalIndex: i }));
+                if (shuffleAnswersEnabled) {
+                    options = options.sort(() => Math.random() - 0.5);
+                }
+
+                html += `
+                    <div class="overview-item">
+                        <div class="overview-question-header">
+                            <span class="overview-question-num">${index + 1}.</span>
+                            <span class="overview-question-text">${q.q}</span>
+                        </div>
+                        <div class="overview-options">
+                            ${options.map((opt, i) => `
+                                <div class="overview-option ${opt.originalIndex === q.correct ? 'correct-highlight' : ''}">
+                                    <span class="option-letter">${letters[i]}</span>
+                                    <span>${opt.text}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // Initialize on page load
+        init();
+    </script>
+</body>
+</html>

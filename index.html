@@ -25,6 +25,30 @@
             margin: 0 auto;
         }
 
+        /* Navigace zpět */
+        .back-nav {
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: white;
+            color: #d63384;
+            text-decoration: none;
+            border-radius: 20px;
+            font-weight: 500;
+            box-shadow: 0 4px 15px rgba(214, 51, 132, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(214, 51, 132, 0.3);
+        }
+
         header {
             text-align: center;
             padding: 30px 0;
@@ -426,180 +450,12 @@
         .deco-3 { bottom: 20%; left: 8%; }
         .deco-4 { bottom: 10%; right: 10%; }
 
-        /* Cute Cat Message */
-        .cat-message {
-            position: fixed;
-            right: 30px;
-            bottom: -300px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-            z-index: 1000;
-            transition: bottom 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        }
-
-        .cat-message.show {
-            bottom: 0px;
-        }
-
-        .cat-emoji {
-            font-size: 4rem;
-            animation: wave 1s ease-in-out infinite;
-            filter: drop-shadow(0 5px 15px rgba(214, 51, 132, 0.3));
-        }
-
-        .cat-container {
-            width: 150px;
-            height: 180px;
-            position: relative;
-        }
-
-        .cat-svg {
-            width: 100%;
-            height: 100%;
-            filter: drop-shadow(0 5px 20px rgba(214, 51, 132, 0.3));
-        }
-
-        @keyframes wave-paw {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(-15deg); }
-            75% { transform: rotate(15deg); }
-        }
-
-        .cat-paw-left {
-            animation: wave-paw 1.5s ease-in-out infinite;
-            transform-origin: 35% 70%;
-        }
-
-        .cat-paw-right {
-            animation: wave-paw 1.5s ease-in-out infinite 0.3s;
-            transform-origin: 65% 70%;
-        }
-
-        @keyframes look-around {
-            0%, 100% { transform: translate(0, 0); }
-            25% { transform: translate(-2px, -1px); }
-            50% { transform: translate(2px, 1px); }
-            75% { transform: translate(-1px, 2px); }
-        }
-
-        .cat-eye-shine {
-            animation: look-around 3s ease-in-out infinite;
-        }
-
-        /* Emoji efekty kolem kočičky */
-        .cat-emoji-effect {
-            position: absolute;
-            font-size: 1.5rem;
-            animation: float-emoji 2s ease-in-out infinite;
-        }
-
-        .emoji-left { top: 10px; left: -30px; }
-        .emoji-right { top: 10px; right: -30px; }
-        .emoji-top { top: -30px; left: 50%; transform: translateX(-50%); }
-
-        @keyframes float-emoji {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-10px) rotate(10deg); }
-        }
-
-        @keyframes sparkle {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.2); }
-        }
-
-        .sparkle-effect {
-            animation: sparkle 1s ease-in-out infinite;
-        }
-
-        /* Blikající kurzor */
-        .typing-cursor {
-            display: inline-block;
-            width: 2px;
-            height: 1.2em;
-            background-color: white;
-            margin-left: 2px;
-            animation: blink-cursor 0.8s infinite;
-            vertical-align: middle;
-        }
-
-        @keyframes blink-cursor {
-            0%, 49% { opacity: 1; }
-            50%, 100% { opacity: 0; }
-        }
-
-        .speech-bubble {
-            background: linear-gradient(135deg, #ff6b9d 0%, #d63384 100%);
-            color: white;
-            padding: 20px 25px;
-            border-radius: 25px;
-            font-size: 1.3rem;
-            font-weight: 600;
-            box-shadow: 0 10px 30px rgba(214, 51, 132, 0.4);
-            position: relative;
-            animation: bubble-bounce 0.5s ease-out;
-            max-width: 250px;
-            text-align: center;
-        }
-
-
-        @keyframes bubble-bounce {
-            0% { transform: scale(0); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-
-        .hearts-animation {
-            position: fixed;
-            right: 50px;
-            font-size: 1.5rem;
-            pointer-events: none;
-            animation: float-hearts 3s ease-out forwards;
-            z-index: 999;
-        }
-
-        @keyframes float-hearts {
-            0% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-200px) scale(1.5);
-            }
-        }
-
         /* Responsive */
         @media (max-width: 600px) {
             h1 { font-size: 1.8rem; }
             .flashcard-front h3, .flashcard-back p { font-size: 1.1rem; }
             .mode-btn { padding: 12px 20px; font-size: 0.9rem; }
 
-            .cat-message.show {
-                right: 10px;
-                bottom: 20px;
-            }
-
-            .cat-emoji {
-                font-size: 3rem;
-            }
-
-            .cat-image {
-                width: 90px;
-                height: 90px;
-            }
-
-            .cat-container {
-                width: 120px;
-                height: 140px;
-            }
-
-            .speech-bubble {
-                font-size: 1.1rem;
-                padding: 15px 20px;
-                max-width: 180px;
-            }
         }
     </style>
 </head>
@@ -609,48 +465,11 @@
     <div class="decoration deco-3">🌸</div>
     <div class="decoration deco-4">💖</div>
 
-    <!-- Cute Cat Message -->
-    <div class="cat-message" id="catMessage">
-        <div class="speech-bubble" id="catSpeech">
-            Miluju tě! 💕
-        </div>
-        <div class="cat-container" style="position: relative;">
-            <!-- Emoji efekty kolem hlavy -->
-            <div class="cat-emoji-effect emoji-left sparkle-effect" id="emojiLeft">✨</div>
-            <div class="cat-emoji-effect emoji-right sparkle-effect" id="emojiRight">💕</div>
-            <div class="cat-emoji-effect emoji-top" id="emojiTop">⭐</div>
-
-            <!-- Super cute kočička - jen kulaté tvary -->
-            <svg viewBox="0 0 100 100" style="width: 140px; height: auto; display: block; margin: 0 auto; filter: drop-shadow(0 5px 20px rgba(214, 51, 132, 0.3));">
-                <!-- Uši - kulaté -->
-                <circle cx="25" cy="25" r="12" fill="#FFB6C1" stroke="#333" stroke-width="2.5"/>
-                <circle cx="75" cy="25" r="12" fill="#FFB6C1" stroke="#333" stroke-width="2.5"/>
-                <circle cx="25" cy="27" r="6" fill="#FFC0CB"/>
-                <circle cx="75" cy="27" r="6" fill="#FFC0CB"/>
-
-                <!-- Hlava -->
-                <circle cx="50" cy="50" r="30" fill="#FFF" stroke="#333" stroke-width="2.5"/>
-
-                <!-- Oči - velké a roztomilé -->
-                <circle cx="38" cy="45" r="7" fill="#333"/>
-                <circle cx="62" cy="45" r="7" fill="#333"/>
-                <circle cx="40" cy="43" r="3" fill="#FFF"/>
-                <circle cx="64" cy="43" r="3" fill="#FFF"/>
-
-                <!-- Růžové tečky na tvářích -->
-                <circle cx="28" cy="52" r="6" fill="#FFB6C1" opacity="0.7"/>
-                <circle cx="72" cy="52" r="6" fill="#FFB6C1" opacity="0.7"/>
-
-                <!-- Nosíček - kulatý -->
-                <ellipse cx="50" cy="54" rx="4" ry="3" fill="#FFB6C1"/>
-
-                <!-- Úsměv - normální křivka -->
-                <path d="M 40 58 Q 50 64 60 58" stroke="#333" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-            </svg>
-        </div>
-    </div>
-
     <div class="container">
+        <nav class="back-nav">
+            <a href="home.html" class="back-btn">⬅️ Zpět na výběr</a>
+        </nav>
+
         <header>
             <div class="hearts">💕 ✨ 💕</div>
             <h1>Manažerské účetnictví</h1>
@@ -1102,90 +921,6 @@
         updateCategoryTabs();
         updateFlashcard();
 
-        // Cute Cat Messages Feature
-        const catMessages = [
-            'Miluju tě! 💕',
-            'Jsi úžasná! ✨',
-            'Zvládneš to! 🌟',
-            'Děláš pokroky! 💪',
-            'Věřím v tebe! 🌸',
-            'Jsi skvělá! 💖',
-            'Držím palce! 🍀',
-            'Myslím na tebe! 💭💕',
-            'Jsi nejlepší! 🏆'
-        ];
-
-        function typeMessage(element, message, speed = 50) {
-            element.innerHTML = '<span class="typing-cursor"></span>';
-            let i = 0;
-
-            // Počkej chvíli s blikajícím kurzorem
-            setTimeout(() => {
-                element.textContent = '';
-
-                const type = () => {
-                    if (i < message.length) {
-                        element.textContent += message.charAt(i);
-                        i++;
-                        setTimeout(type, speed);
-                    } else {
-                        // Odstraň kurzor po dopsání
-                        element.innerHTML = element.textContent;
-                    }
-                };
-
-                type();
-            }, 800);
-        }
-
-        function showCatMessage() {
-            const catMessageEl = document.getElementById('catMessage');
-            const catSpeechEl = document.getElementById('catSpeech');
-
-            // Vyber náhodnou zprávu
-            const randomMessage = catMessages[Math.floor(Math.random() * catMessages.length)];
-
-            // Zobraz kočičku
-            catMessageEl.classList.add('show');
-
-            // Typing efekt s kurzorem
-            typeMessage(catSpeechEl, randomMessage, 60);
-
-            // Vytvoř plovoucí srdíčka
-            createFloatingHearts();
-
-            // Skryj po 8 sekundách
-            setTimeout(() => {
-                catMessageEl.classList.remove('show');
-            }, 8000);
-        }
-
-        function createFloatingHearts() {
-            const hearts = ['💕', '💖', '💗', '💝', '💓'];
-            const heartCount = 5;
-
-            for (let i = 0; i < heartCount; i++) {
-                setTimeout(() => {
-                    const heart = document.createElement('div');
-                    heart.className = 'hearts-animation';
-                    heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
-                    heart.style.bottom = (100 + Math.random() * 200) + 'px';
-                    heart.style.right = (30 + Math.random() * 100) + 'px';
-                    document.body.appendChild(heart);
-
-                    // Odstraň po animaci
-                    setTimeout(() => {
-                        heart.remove();
-                    }, 3000);
-                }, i * 300);
-            }
-        }
-
-        // Zobraz kočičku každé 3 minuty
-        setInterval(showCatMessage, 180000);
-
-        // První zobrazení po 5 sekundách
-        setTimeout(showCatMessage, 5000);
     </script>
 </body>
 </html>

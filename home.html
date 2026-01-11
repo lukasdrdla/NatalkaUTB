@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz pro Natálku</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ffeef8 0%, #fff0f5 50%, #ffe4ec 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+
+        header {
+            margin-bottom: 50px;
+        }
+
+        .hearts {
+            font-size: 2rem;
+            animation: pulse 1.5s ease-in-out infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        h1 {
+            color: #d63384;
+            font-size: 3rem;
+            text-shadow: 2px 2px 4px rgba(214, 51, 132, 0.2);
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            color: #e785a8;
+            font-size: 1.3rem;
+            font-weight: 300;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .subject-card {
+            background: white;
+            border-radius: 30px;
+            padding: 40px 30px;
+            box-shadow: 0 15px 50px rgba(214, 51, 132, 0.15);
+            transition: all 0.4s ease;
+            text-decoration: none;
+            display: block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .subject-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            border-radius: 30px 30px 0 0;
+        }
+
+        .subject-card.pink::before {
+            background: linear-gradient(135deg, #ff6b9d 0%, #d63384 100%);
+        }
+
+        .subject-card.blue::before {
+            background: linear-gradient(135deg, #5dade2 0%, #2980b9 100%);
+        }
+
+        .subject-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 60px rgba(214, 51, 132, 0.25);
+        }
+
+        .card-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .subject-card.pink .card-title {
+            color: #d63384;
+        }
+
+        .subject-card.blue .card-title {
+            color: #2980b9;
+        }
+
+        .card-description {
+            color: #888;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .card-stats {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .subject-card.pink .stat-value {
+            color: #d63384;
+        }
+
+        .subject-card.blue .stat-value {
+            color: #2980b9;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #aaa;
+        }
+
+        .card-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: 600;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .subject-card.pink .card-btn {
+            background: linear-gradient(135deg, #ff6b9d 0%, #d63384 100%);
+        }
+
+        .subject-card.blue .card-btn {
+            background: linear-gradient(135deg, #5dade2 0%, #2980b9 100%);
+        }
+
+        .subject-card:hover .card-btn {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .features {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .feature-tag {
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .subject-card.pink .feature-tag {
+            background: #ffe4ec;
+            color: #d63384;
+        }
+
+        .subject-card.blue .feature-tag {
+            background: #d6eaf8;
+            color: #2980b9;
+        }
+
+        /* Decorations */
+        .decoration {
+            position: fixed;
+            opacity: 0.15;
+            font-size: 4rem;
+            pointer-events: none;
+            z-index: -1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        .deco-1 { top: 10%; left: 5%; animation-delay: 0s; }
+        .deco-2 { top: 20%; right: 8%; animation-delay: 1s; }
+        .deco-3 { bottom: 30%; left: 8%; animation-delay: 2s; }
+        .deco-4 { bottom: 15%; right: 5%; animation-delay: 3s; }
+        .deco-5 { top: 50%; left: 3%; animation-delay: 4s; }
+
+        .love-message {
+            margin-top: 50px;
+            padding: 20px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(214, 51, 132, 0.1);
+        }
+
+        .love-message p {
+            color: #e785a8;
+            font-size: 1.1rem;
+            font-style: italic;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            h1 { font-size: 2rem; }
+            .subtitle { font-size: 1rem; }
+            .card-icon { font-size: 3rem; }
+            .card-title { font-size: 1.2rem; }
+            .subject-card { padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="decoration deco-1">💕</div>
+    <div class="decoration deco-2">✨</div>
+    <div class="decoration deco-3">🌸</div>
+    <div class="decoration deco-4">📚</div>
+    <div class="decoration deco-5">💖</div>
+
+    <div class="container">
+        <header>
+            <div class="hearts">💕 ✨ 💕</div>
+            <h1>Quiz pro Natálku</h1>
+            <p class="subtitle">Vyber si předmět a začni se učit! 🌸</p>
+        </header>
+
+        <div class="cards-container">
+            <!-- MAUC Card -->
+            <a href="index.html" class="subject-card pink">
+                <div class="card-icon">📊</div>
+                <h2 class="card-title">Manažerské účetnictví</h2>
+                <p class="card-description">MAUC - Kartičky pro opakování</p>
+
+                <div class="card-stats">
+                    <div class="stat">
+                        <div class="stat-value">94</div>
+                        <div class="stat-label">kartiček</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">4</div>
+                        <div class="stat-label">okruhy</div>
+                    </div>
+                </div>
+
+                <div class="features">
+                    <span class="feature-tag">Kartičky</span>
+                    <span class="feature-tag">Quiz</span>
+                    <span class="feature-tag">Okruhy</span>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <span class="card-btn">Otevřít</span>
+                </div>
+            </a>
+
+            <!-- MEF Card -->
+            <a href="mef.html" class="subject-card blue">
+                <div class="card-icon">🌍</div>
+                <h2 class="card-title">Mezinárodní finance</h2>
+                <p class="card-description">MEF - Test z otázek ke zkoušce</p>
+
+                <div class="card-stats">
+                    <div class="stat">
+                        <div class="stat-value">120+</div>
+                        <div class="stat-label">otázek</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">režimy</div>
+                    </div>
+                </div>
+
+                <div class="features">
+                    <span class="feature-tag">Učení</span>
+                    <span class="feature-tag">Test</span>
+                    <span class="feature-tag">Přehled</span>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <span class="card-btn">Otevřít</span>
+                </div>
+            </a>
+        </div>
+
+    </div>
+</body>
+</html>
